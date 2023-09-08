@@ -8,6 +8,8 @@ public class LoanCard {
     private String loanId;
     private String loanType;
     private Integer duration;
+    @OneToOne(mappedBy = "idCard")
+    private EmployeeCardDetails employeeCardDetails;
 
     public LoanCard() {
 
@@ -28,7 +30,7 @@ public class LoanCard {
         this.loanId = id;
     }
 
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "loanId", nullable = false)
     public String getloanId() {
         return loanId;
     }
@@ -36,7 +38,7 @@ public class LoanCard {
         this.loanId = loanId;
     }
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "loanType", nullable = false)
     public String getloanType() {
         return loanType;
     }
@@ -44,7 +46,7 @@ public class LoanCard {
         this.loanType = loanType;
     }
 
-    @Column(name = "email_address", nullable = false)
+    @Column(name = "duration", nullable = false)
     public Integer getduration() {
         return duration;
     }
