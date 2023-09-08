@@ -7,7 +7,7 @@ public class EmployeeCardDetails {
     private String empId;
     private Integer issueDate;
     @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "id_card_id")
+    @JoinColumn(name = "loan_card_id")
     private LoanCard loanCard;
 
 

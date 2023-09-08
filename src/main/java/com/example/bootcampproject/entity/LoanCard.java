@@ -8,7 +8,7 @@ public class LoanCard {
     private String loanId;
     private String loanType;
     private Integer duration;
-    @OneToOne(mappedBy = "idCard")
+    @OneToOne(mappedBy = "empId")
     private EmployeeCardDetails employeeCardDetails;
 
     public LoanCard() {
