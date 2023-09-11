@@ -1,5 +1,4 @@
 package com.example.bootcampproject.controller;
-import java.util.HashMap;
 
 import java.util.List;
 import java.util.Map;
@@ -20,54 +19,45 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bootcampproject.entity.AdminCredentials;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
-import com.example.bootcampproject.repository.AdminRepository;
-
+import com.example.bootcampproject.service.AdminService;
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 public class AdminController {
     @Autowired
-    private AdminRepository adminRepository;
+    private AdminService adminService;
 
     @GetMapping("/admincredentials/all")
     public List < AdminCredentials > getAllAdminCredentials() {
-        return adminRepository.findAll();
+        return adminService.getAllAdminCredentials();
     }
 
     @GetMapping("/admincredentials/{id}")
     public ResponseEntity < AdminCredentials > getAdminCredentialsById(@PathVariable(value = "id") Long employeeId)
     throws ResourceNotFoundException {
-        AdminCredentials adminCredentials = adminRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this id :: " + employeeId));
-        return ResponseEntity.ok().body(adminCredentials);
+        return adminService.getAdminCredentialsById(employeeId);
+    }
+
+    @PostMapping("/admincredentials/login")
+    public ResponseEntity<String> verifyAdminCredentials( @Valid @RequestBody AdminCredentials employeeDetails)
+    throws ResourceNotFoundException {
+        return adminService.verifyAdminCredentials(employeeDetails);
     }
 
     @PostMapping("/admincredentials")
     public AdminCredentials createEmployee(@Valid @RequestBody AdminCredentials adminCredentials) {
-        return adminRepository.save(adminCredentials);
+        return adminService.createEmployee(adminCredentials);
     }
 
     @PutMapping("/admincredentials/{id}")
     public ResponseEntity < AdminCredentials > updateEmployee(@PathVariable(value = "id") Long employeeId,
         @Valid @RequestBody AdminCredentials employeeDetails) throws ResourceNotFoundException {
-        AdminCredentials adminCredentials = adminRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this id :: " + employeeId));
-
-        adminCredentials.setEmailId(employeeDetails.getEmailId());
-        adminCredentials.setUsername(employeeDetails.getUsername());
-        adminCredentials.setPassword(employeeDetails.getPassword());
-        final AdminCredentials updatedEmployee = adminRepository.save(adminCredentials);
-        return ResponseEntity.ok(updatedEmployee);
+        return adminService.updateEmployee(employeeId, employeeDetails);
     }
 
     @DeleteMapping("/admincredentials/{id}")
     public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)
     throws ResourceNotFoundException {
-        AdminCredentials adminCredentials = adminRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this id :: " + employeeId));
-
-        adminRepository.delete(adminCredentials);
-        Map < String, Boolean > response = new HashMap < > ();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        return adminService.deleteEmployee(employeeId);
     }
 }

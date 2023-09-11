@@ -6,25 +6,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "employee_card")
-public class EmployeeCardDetails {
+@Table(name = "employee_issue")
+public class EmployeeIssue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer Id;
-    private Integer issueDate;
+    private Integer issueId;
     @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "loan_card_id")
-    private LoanCard loanCard;
+    @JoinColumn(name = "item_id")
+    private Item item;
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "employee_id")
     private Employee employee;
-
-    public EmployeeCardDetails(){
-
-    }
-    public EmployeeCardDetails(Integer Id, Integer issueDate, LoanCard loanCard, Employee employee){
-        
-    }
-    
-
+    @Column(nullable = false)
+    private String issueDate;
+    @Column(nullable = false)
+    private String returnDate;
 }

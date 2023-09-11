@@ -10,8 +10,10 @@ import lombok.Setter;
 @Table(name = "item")
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer itemId;
+
+    @OneToOne(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private EmployeeIssue employeeIssue;
     private String itemDescription;
     @Column(nullable = false)
     private String issueStatus;
@@ -20,5 +22,6 @@ public class Item {
     private String itemCategory;
     @Column(nullable = false)
     private Integer itemValuation;
-
+    
+    
 }

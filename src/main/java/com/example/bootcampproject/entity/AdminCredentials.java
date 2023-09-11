@@ -20,17 +20,20 @@ public class AdminCredentials {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(unique = true, nullable = false)
-    private String username;
+    private String userName;
     @Column( nullable = false)
     private String password;
     private String emailId;
+
+
+    public AdminCredentials(long id,String username,String password,String emailId){
+        this.id = id;
+        this.userName = username;
+        this.password = password;
+        this.emailId = emailId;
+    }
     public AdminCredentials(){
         
     }
-    public AdminCredentials(String username, String password, String emailId) {
-            this.username = username;
-            this.password = password;
-            this.emailId = emailId;
 
-    }
 }
