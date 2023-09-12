@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonSerializer;
 import jakarta.validation.Valid;
 
 import org.hibernate.validator.internal.util.logging.LoggerFactory;
@@ -65,16 +66,19 @@ public class EmployeeServiceImpl implements EmployeeService{
         return ResponseEntity.status(HttpStatus.OK).body("Employee Registered!");
     }
     @Override
-    public ResponseEntity<String> verifyEmployee(@Valid @RequestBody Employee employeeDetails)
+    public ResponseEntity<Object> verifyEmployee(@Valid @RequestBody Employee employeeDetails)
      throws ResourceNotFoundException {
 
        
         Employee employee = employeeRepository.findByUserName(employeeDetails.getUserName())
             .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this username :: " + employeeDetails.getUserName()));
         if(employee.getPassword().equalsIgnoreCase(employeeDetails.getPassword()) && employee.getUserName().equalsIgnoreCase(employeeDetails.getUserName())){
-            
-            return ResponseEntity.status(HttpStatus.OK).body("Employee Validated");
-        
+
+            Map<String, String> data = new HashMap<>();
+            data.put("role", "NULL");
+            return new ResponseEntity<>(data, HttpStatus.OK);
+
+
         }else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Employee Unauthorized");
         }
