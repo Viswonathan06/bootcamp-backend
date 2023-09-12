@@ -1,5 +1,8 @@
 package com.example.bootcampproject.entity;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import jakarta.persistence.Column;
@@ -20,9 +23,15 @@ public class AdminCredentials {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(unique = true, nullable = false)
+    @NotBlank(message="Username cannot be empty")
+    @Size(min=7,max=7,message="Username must be of 7 characters only")
     private String userName;
     @Column( nullable = false)
+    @NotBlank(message="Password cannot be empty")
+    @Size(min=5, max=20, message="Password must be of 5-20 characters only")
     private String password;
+
+    @Email(message="Invalid Email Address")
     private String emailId;
 
 
