@@ -24,6 +24,7 @@ public class AdminCredentials {
     @Column( nullable = false)
     private String password;
     private String emailId;
+    private String role = "ADMIN";
 
 
     public AdminCredentials(long id,String username,String password,String emailId){
@@ -31,6 +32,7 @@ public class AdminCredentials {
         this.userName = username;
         this.password = password;
         this.emailId = emailId;
+        
     }
     public AdminCredentials(){
         

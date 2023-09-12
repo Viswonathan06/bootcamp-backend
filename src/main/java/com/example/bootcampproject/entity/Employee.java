@@ -18,6 +18,11 @@ public class Employee {
     private String gender;
     private String dateOfBirth;
     private String dateOfJoining;
+    private String userName;
+    private String password;
+    private String emailId;
+    private String role;
+
     @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private EmployeeCardDetails employeeCardDetails;
     @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -26,8 +31,10 @@ public class Employee {
     public Employee(){
 
     }
-    public Employee(String employeeName,String department,String designation ,String gender ,String dateOfBirth ,String dateOfJoining ,EmployeeCardDetails employeeCardDetails ,EmployeeIssue employeeIssue){
+    public Employee(String userName, String emailId, String password, String employeeName,String department,String designation ,String gender ,String dateOfBirth ,String dateOfJoining ,EmployeeCardDetails employeeCardDetails ,EmployeeIssue employeeIssue){
         this.employeeName =  employeeName;
+        this.password = password;
+        this.userName = userName;
         this.designation= designation;
         this.department =  department;
         this.gender =  gender;
@@ -35,6 +42,9 @@ public class Employee {
         this.dateOfJoining =  dateOfJoining;
         this.employeeCardDetails=employeeCardDetails;
         this.employeeIssue = employeeIssue;
+        this.emailId = emailId;
+        this.role = null;
+
     }
    
     
