@@ -6,6 +6,7 @@ import java.util.Map;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.env.RandomValuePropertySourceEnvironmentPostProcessor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,14 +40,20 @@ public class AdminController {
     }
 
     @PostMapping("/admincredentials/login")
-    public ResponseEntity<String> verifyAdminCredentials( @Valid @RequestBody AdminCredentials employeeDetails)
+    public ResponseEntity<String> verifyAdminCredentials( @Valid @RequestBody AdminCredentials adminCredentials)
     throws ResourceNotFoundException {
-        return adminService.verifyAdminCredentials(employeeDetails);
+        return adminService.verifyAdminCredentials(adminCredentials);
+    }
+
+    @PostMapping("/admincredentials/register")
+    public ResponseEntity<String> registerAdminCredentials( @Valid @RequestBody AdminCredentials adminCredentials)
+    throws ResourceNotFoundException {
+        return adminService.registerAdminCredentials(adminCredentials);
     }
 
     @PostMapping("/admincredentials")
-    public AdminCredentials createEmployee(@Valid @RequestBody AdminCredentials adminCredentials) {
-        return adminService.createEmployee(adminCredentials);
+    public AdminCredentials createAdminCredentials(@Valid @RequestBody AdminCredentials adminCredentials) {
+        return adminService.createAdminCredentials(adminCredentials);
     }
 
     @PutMapping("/admincredentials/{id}")

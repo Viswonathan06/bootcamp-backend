@@ -1,6 +1,9 @@
 package com.example.bootcampproject.service;
 
 import com.example.bootcampproject.repository.AdminRepository;
+
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+
 import com.example.bootcampproject.controller.AdminController;
 import com.example.bootcampproject.entity.AdminCredentials;
 import java.util.HashMap;
@@ -10,6 +13,7 @@ import java.util.Map;
 
 import jakarta.validation.Valid;
 
+import org.hibernate.validator.internal.util.logging.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -39,7 +43,7 @@ public class AdminServiceImpl implements AdminService{
         return ResponseEntity.ok().body(adminCredentials);
     }
     @Override
-    public AdminCredentials createEmployee(@Valid @RequestBody AdminCredentials adminCredentials) {
+    public AdminCredentials createAdminCredentials(@Valid @RequestBody AdminCredentials adminCredentials) {
         return adminRepository.save(adminCredentials);
     }
     @Override
@@ -66,17 +70,21 @@ public class AdminServiceImpl implements AdminService{
         return response;
     }
     @Override
+    public ResponseEntity<String> registerAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
+     throws ResourceNotFoundException {
+        AdminCredentials savedAdmin =  adminRepository.save(employeeDetails);
+        return ResponseEntity.status(HttpStatus.OK).body("Admin Registered!");
+    }
+    @Override
     public ResponseEntity<String> verifyAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
      throws ResourceNotFoundException {
 
-        System.out.println(employeeDetails.getUserName());
+       
         AdminCredentials adminCredentials = adminRepository.findByUserName(employeeDetails.getUserName())
             .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this username :: " + employeeDetails.getUserName()));
-        Map < String, Boolean > response = new HashMap < > ();
         if(adminCredentials.getPassword().equalsIgnoreCase(employeeDetails.getPassword()) && adminCredentials.getUserName().equalsIgnoreCase(employeeDetails.getUserName())){
-            // response.put("Logged In!", Boolean.TRUE);
-            // response.put(, )
-            return ResponseEntity.status(HttpStatus.OK).body("Admin Validated");
+            
+            return ResponseEntity.status(HttpStatus.OK).body("ADMIN");
         
         }else{
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Admin Unauthorized");

@@ -16,11 +16,12 @@ import jakarta.validation.Valid;
 public interface AdminService {
     public List < AdminCredentials > getAllAdminCredentials();
     public ResponseEntity < AdminCredentials > getAdminCredentialsById(@PathVariable(value = "id") Long employeeId) throws ResourceNotFoundException;
-    public AdminCredentials createEmployee(@Valid @RequestBody AdminCredentials adminCredentials);
+    public AdminCredentials createAdminCredentials(@Valid @RequestBody AdminCredentials adminCredentials);
     public ResponseEntity < AdminCredentials > updateEmployee(@PathVariable(value = "id") Long employeeId,
         @Valid @RequestBody AdminCredentials employeeDetails) throws ResourceNotFoundException;
     public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)
     throws ResourceNotFoundException;
     public ResponseEntity<String> verifyAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails) throws ResourceNotFoundException;
-
+    public ResponseEntity<String> registerAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
+     throws ResourceNotFoundException;
 }
