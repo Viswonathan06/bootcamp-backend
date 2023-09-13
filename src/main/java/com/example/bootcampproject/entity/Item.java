@@ -10,6 +10,7 @@ import lombok.Setter;
 @Table(name = "item")
 public class Item {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer itemId;
 
     @OneToOne(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
