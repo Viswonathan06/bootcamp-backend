@@ -16,12 +16,12 @@ import jakarta.validation.Valid;
 public interface EmployeeService {
     public List < Employee > getAllEmployee();
     public ResponseEntity < Employee > getEmployeeById(@PathVariable(value = "id") Long employeeId) throws ResourceNotFoundException;
-    public Employee createEmployee(@Valid @RequestBody Employee adminCredentials);
+    public Employee createEmployee(@Valid @RequestBody Employee employee);
     // public ResponseEntity < Employee > updateEmployee(@PathVariable(value = "id") Long employeeId,
     //     @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException;
     public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)
     throws ResourceNotFoundException;
-    public ResponseEntity<String> verifyEmployee(@Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException;
-    public ResponseEntity<String> registerEmployee(@Valid @RequestBody Employee employeeDetails)
+    public ResponseEntity<Employee> verifyEmployee(@Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException;
+    public ResponseEntity<Employee> registerEmployee(@Valid @RequestBody Employee employeeDetails)
      throws ResourceNotFoundException;
 }

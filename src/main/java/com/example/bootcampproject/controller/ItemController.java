@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.bootcampproject.entity.Item;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.service.ItemService;
-@CrossOrigin(origins="http://localhost:3000")
+// @CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class ItemController {
