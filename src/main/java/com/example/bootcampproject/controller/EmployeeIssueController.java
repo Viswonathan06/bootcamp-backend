@@ -1,5 +1,6 @@
 package com.example.bootcampproject.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.bootcampproject.dto.EmployeeIssueDTO;
 import com.example.bootcampproject.entity.EmployeeIssue;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.service.EmployeeIssueService;
@@ -27,8 +29,15 @@ public class EmployeeIssueController {
     private EmployeeIssueService employeeIssueService;
 
     @GetMapping("/employeeissue/all")
-    public List < EmployeeIssue > getAllEmployeeIssue() {
-        return employeeIssueService.getAllEmployeeIssue();
+    public List < EmployeeIssueDTO > getAllEmployeeIssue() {
+        List <EmployeeIssue > issueList =  employeeIssueService.getAllEmployeeIssue();
+        List <EmployeeIssueDTO> finalList = new ArrayList<>();
+        for(EmployeeIssue issue: issueList){
+            EmployeeIssueDTO issueDto = new EmployeeIssueDTO(issue.getIssueId(), issue.getItem().getItemId(), issue.getEmployee().getEmployeeId(), issue.getIssueDate(), issue.getReturnDate());
+            finalList.add(issueDto);
+        }
+        return finalList;
+
     }
 
     @GetMapping("/employeeissue/{id}")

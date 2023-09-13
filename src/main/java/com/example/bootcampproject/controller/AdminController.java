@@ -39,13 +39,13 @@ public class AdminController {
     }
 
     @PostMapping("/admincredentials/login")
-    public ResponseEntity<String> verifyAdminCredentials( @Valid @RequestBody AdminCredentials adminCredentials)
+    public ResponseEntity<AdminCredentials> verifyAdminCredentials( @Valid @RequestBody AdminCredentials adminCredentials)
     throws ResourceNotFoundException {
         return adminService.verifyAdminCredentials(adminCredentials);
     }
 
     @PostMapping("/admincredentials/register")
-    public ResponseEntity<String> registerAdminCredentials( @Valid @RequestBody AdminCredentials adminCredentials)
+    public ResponseEntity<AdminCredentials> registerAdminCredentials( @Valid @RequestBody AdminCredentials adminCredentials)
     throws ResourceNotFoundException {
         return adminService.registerAdminCredentials(adminCredentials);
     }

@@ -33,7 +33,11 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public List < AdminCredentials > getAllAdminCredentials() {
-        return adminRepository.findAll();
+        List<AdminCredentials> lst =  adminRepository.findAll();
+        for(AdminCredentials ac: lst){
+            ac.setPassword(null);
+        }
+        return lst;
     }
     @Override
     public ResponseEntity < AdminCredentials > getAdminCredentialsById(@PathVariable(value = "id") Long employeeId)
@@ -70,24 +74,26 @@ public class AdminServiceImpl implements AdminService{
         return response;
     }
     @Override
-    public ResponseEntity<String> registerAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
+    public ResponseEntity<AdminCredentials> registerAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
      throws ResourceNotFoundException {
         AdminCredentials savedAdmin =  adminRepository.save(employeeDetails);
-        return ResponseEntity.status(HttpStatus.OK).body("Admin Registered!");
+        savedAdmin.setPassword(null);
+        return ResponseEntity.status(HttpStatus.OK).body(savedAdmin);
     }
     @Override
-    public ResponseEntity<String> verifyAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
+    public ResponseEntity<AdminCredentials> verifyAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
      throws ResourceNotFoundException {
 
        
         AdminCredentials adminCredentials = adminRepository.findByUserName(employeeDetails.getUserName())
             .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this username :: " + employeeDetails.getUserName()));
         if(adminCredentials.getPassword().equalsIgnoreCase(employeeDetails.getPassword()) && adminCredentials.getUserName().equalsIgnoreCase(employeeDetails.getUserName())){
-            
-            return ResponseEntity.status(HttpStatus.OK).body("ADMIN");
+            adminCredentials.setPassword(null);
+            return ResponseEntity.status(HttpStatus.OK).body(adminCredentials);
         
         }else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Admin Unauthorized");
+            AdminCredentials temp = new AdminCredentials();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(temp);
         }
     }
 }

@@ -1,4 +1,8 @@
 package com.example.bootcampproject.entity;
+import java.sql.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,14 +15,18 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer employeeId;
-    @Column(nullable = false)
+    @Column(nullable = false)    
     private String employeeName;
     private String designation;
     private String department;
     private String gender;
-    private String dateOfBirth;
-    private String dateOfJoining;
-    private String userName;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date dateOfBirth;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date dateOfJoining;
+    @Column(nullable = false)
+    private String userName;   
+    @Column(nullable = false)
     private String password;
     private String emailId;
     private String role;
@@ -31,7 +39,7 @@ public class Employee {
     public Employee(){
 
     }
-    public Employee(String userName, String emailId, String password, String employeeName,String department,String designation ,String gender ,String dateOfBirth ,String dateOfJoining ,EmployeeCardDetails employeeCardDetails ,EmployeeIssue employeeIssue){
+    public Employee(String userName, String emailId, String password, String employeeName,String department,String designation ,String gender ,Date dateOfBirth ,Date dateOfJoining ,EmployeeCardDetails employeeCardDetails ,EmployeeIssue employeeIssue){
         this.employeeName =  employeeName;
         this.password = password;
         this.userName = userName;

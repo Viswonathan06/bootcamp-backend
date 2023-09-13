@@ -1,4 +1,8 @@
 package com.example.bootcampproject.entity;
+import java.sql.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +22,19 @@ public class EmployeeIssue {
     @JoinColumn(name = "employee_id")
     private Employee employee;
     @Column(nullable = false)
-    private String issueDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date issueDate;
     @Column(nullable = false)
-    private String returnDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date returnDate;
+    public EmployeeIssue(){
+        
+    }
+    public EmployeeIssue(Integer issueId,Item item,Employee employee,Date issueDate,Date returnDate){
+        this.issueId = issueId;
+        this.item = item;
+        this.employee = employee;
+        this.issueDate = issueDate;
+        this.returnDate = returnDate;
+    }
 }
