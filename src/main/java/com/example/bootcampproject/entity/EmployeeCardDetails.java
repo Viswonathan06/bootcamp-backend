@@ -1,4 +1,8 @@
 package com.example.bootcampproject.entity;
+import java.sql.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +15,8 @@ public class EmployeeCardDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer Id;
-    private Integer issueDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date issueDate;
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "loan_card_id")
     private LoanCard loanCard;
@@ -22,8 +27,11 @@ public class EmployeeCardDetails {
     public EmployeeCardDetails(){
 
     }
-    public EmployeeCardDetails(Integer Id, Integer issueDate, LoanCard loanCard, Employee employee){
-        
+    public EmployeeCardDetails(Integer Id, Date issueDate, LoanCard loanCard, Employee employee){
+        this.Id = Id;
+        this.issueDate = issueDate;
+        this.loanCard = loanCard;
+        this.employee = employee;
     }
     
 

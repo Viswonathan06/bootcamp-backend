@@ -33,7 +33,11 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public List < AdminCredentials > getAllAdminCredentials() {
-        return adminRepository.findAll();
+        List<AdminCredentials> lst =  adminRepository.findAll();
+        for(AdminCredentials ac: lst){
+            ac.setPassword(null);
+        }
+        return lst;
     }
     @Override
     public ResponseEntity < AdminCredentials > getAdminCredentialsById(@PathVariable(value = "id") Long employeeId)
@@ -70,12 +74,14 @@ public class AdminServiceImpl implements AdminService{
         return response;
     }
     @Override
-    public ResponseEntity<String> registerAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
+    public ResponseEntity<AdminCredentials> registerAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
      throws ResourceNotFoundException {
         AdminCredentials savedAdmin =  adminRepository.save(employeeDetails);
-        return ResponseEntity.status(HttpStatus.OK).body("Admin Registered!");
+        savedAdmin.setPassword(null);
+        return ResponseEntity.status(HttpStatus.OK).body(savedAdmin);
     }
     @Override
+
     public ResponseEntity<Object> verifyAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
      throws ResourceNotFoundException {
 

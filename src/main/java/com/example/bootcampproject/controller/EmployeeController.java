@@ -3,17 +3,13 @@ package com.example.bootcampproject.controller;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.env.RandomValuePropertySourceEnvironmentPostProcessor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.service.EmployeeService;
+
+import jakarta.validation.Valid;
 @CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/api")
@@ -46,7 +44,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee/register")
-    public ResponseEntity<String> registerEmployee( @Valid @RequestBody Employee employee)
+    public ResponseEntity<Employee> registerEmployee( @Valid @RequestBody Employee employee)
     throws ResourceNotFoundException {
         return employeeService.registerEmployee(employee);
     }

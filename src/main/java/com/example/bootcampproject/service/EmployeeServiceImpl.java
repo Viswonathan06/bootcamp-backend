@@ -1,28 +1,27 @@
 package com.example.bootcampproject.service;
 
-import com.example.bootcampproject.repository.EmployeeRepository;
-
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
-
-import com.example.bootcampproject.controller.EmployeeController;
-import com.example.bootcampproject.entity.Employee;
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
+
 
 import com.fasterxml.jackson.databind.JsonSerializer;
 import jakarta.validation.Valid;
 
 import org.hibernate.validator.internal.util.logging.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
+import com.example.bootcampproject.repository.EmployeeRepository;
+
+import jakarta.validation.Valid;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -60,12 +59,14 @@ public class EmployeeServiceImpl implements EmployeeService{
         return response;
     }
     @Override
-    public ResponseEntity<String> registerEmployee(@Valid @RequestBody Employee employeeDetails)
+    public ResponseEntity<Employee> registerEmployee(@Valid @RequestBody Employee employeeDetails)
      throws ResourceNotFoundException {
         Employee savedEmployee =  employeeRepository.save(employeeDetails);
-        return ResponseEntity.status(HttpStatus.OK).body("Employee Registered!");
+        savedEmployee.setPassword(null);
+        return ResponseEntity.status(HttpStatus.OK).body(savedEmployee);
     }
     @Override
+
     public ResponseEntity<Object> verifyEmployee(@Valid @RequestBody Employee employeeDetails)
      throws ResourceNotFoundException {
 
@@ -74,13 +75,14 @@ public class EmployeeServiceImpl implements EmployeeService{
             .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this username :: " + employeeDetails.getUserName()));
         if(employee.getPassword().equalsIgnoreCase(employeeDetails.getPassword()) && employee.getUserName().equalsIgnoreCase(employeeDetails.getUserName())){
 
+
             Map<String, String> data = new HashMap<>();
             data.put("role", "NULL");
             return new ResponseEntity<>(data, HttpStatus.OK);
 
-
         }else{
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Employee Unauthorized");
+            final Employee employee2 = new Employee();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(employee2);
         }
     }
 }

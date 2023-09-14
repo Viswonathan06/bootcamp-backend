@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.bootcampproject.entity.Item;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.service.ItemService;
-@CrossOrigin(origins="http://localhost:3000")
+// @CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class ItemController {
@@ -54,7 +54,7 @@ public class ItemController {
     //     @Valid @RequestBody Item itemDetails) throws ResourceNotFoundException {
     //     return itemService.updateItem(itemId, itemDetails);
     // }
-
+ 
     @DeleteMapping("/item/{id}")
     public Map < String, Boolean > deleteItem(@PathVariable(value = "id") Long itemId)
     throws ResourceNotFoundException {
