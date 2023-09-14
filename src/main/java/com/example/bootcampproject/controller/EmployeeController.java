@@ -38,7 +38,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee/login")
-    public ResponseEntity<Employee> verifyEmployee( @Valid @RequestBody Employee employee)
+    public ResponseEntity<Object> verifyEmployee( @Valid @RequestBody Employee employee)
     throws ResourceNotFoundException {
         return employeeService.verifyEmployee(employee);
     }

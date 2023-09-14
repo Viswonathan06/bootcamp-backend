@@ -81,19 +81,21 @@ public class AdminServiceImpl implements AdminService{
         return ResponseEntity.status(HttpStatus.OK).body(savedAdmin);
     }
     @Override
-    public ResponseEntity<AdminCredentials> verifyAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
+
+    public ResponseEntity<Object> verifyAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
      throws ResourceNotFoundException {
 
        
         AdminCredentials adminCredentials = adminRepository.findByUserName(employeeDetails.getUserName())
             .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this username :: " + employeeDetails.getUserName()));
         if(adminCredentials.getPassword().equalsIgnoreCase(employeeDetails.getPassword()) && adminCredentials.getUserName().equalsIgnoreCase(employeeDetails.getUserName())){
-            adminCredentials.setPassword(null);
-            return ResponseEntity.status(HttpStatus.OK).body(adminCredentials);
+            Map<String, String> data = new HashMap<>();
+            data.put("role","ADMIN");
+            return new ResponseEntity<>(data, HttpStatus.OK);
         
         }else{
-            AdminCredentials temp = new AdminCredentials();
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(temp);
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Admin Unauthorized");
         }
     }
 }

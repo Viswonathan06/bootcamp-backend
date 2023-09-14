@@ -4,6 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+import com.fasterxml.jackson.databind.JsonSerializer;
+import jakarta.validation.Valid;
+
+import org.hibernate.validator.internal.util.logging.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,16 +66,20 @@ public class EmployeeServiceImpl implements EmployeeService{
         return ResponseEntity.status(HttpStatus.OK).body(savedEmployee);
     }
     @Override
-    public ResponseEntity<Employee> verifyEmployee(@Valid @RequestBody Employee employeeDetails)
+
+    public ResponseEntity<Object> verifyEmployee(@Valid @RequestBody Employee employeeDetails)
      throws ResourceNotFoundException {
 
        
         Employee employee = employeeRepository.findByUserName(employeeDetails.getUserName())
             .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this username :: " + employeeDetails.getUserName()));
         if(employee.getPassword().equalsIgnoreCase(employeeDetails.getPassword()) && employee.getUserName().equalsIgnoreCase(employeeDetails.getUserName())){
-            employee.setPassword(null);
-            return ResponseEntity.status(HttpStatus.OK).body(employee);
-        
+
+
+            Map<String, String> data = new HashMap<>();
+            data.put("role", "NULL");
+            return new ResponseEntity<>(data, HttpStatus.OK);
+
         }else{
             final Employee employee2 = new Employee();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(employee2);

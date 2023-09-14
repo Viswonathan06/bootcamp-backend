@@ -4,6 +4,7 @@ import java.sql.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,10 +16,15 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer employeeId;
-    @Column(nullable = false)    
+
+    @Column(nullable = false)
+    @NotBlank(message="Name cannot be blank")
     private String employeeName;
+    @NotBlank(message="Designation cannot be blank")
     private String designation;
+    @NotBlank(message="Department cannot be blank")
     private String department;
+    @NotBlank(message="Gender cannot be blank")
     private String gender;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dateOfBirth;
