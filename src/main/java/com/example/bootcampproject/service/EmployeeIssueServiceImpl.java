@@ -67,10 +67,6 @@ public class EmployeeIssueServiceImpl implements EmployeeIssueService{
             .orElseThrow(() -> new ResourceNotFoundException("Item not found for this id :: " + employeeIssueDTO.getItem_id()));
         Employee employee = employeeRepository.findById(Long.valueOf(employeeIssueDTO.getEmployee_id()))
             .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeIssueDTO.getEmployee_id()));
-        
-        System.out.print(item.getItemId());
-        System.out.print(employee.getEmployeeName());
-
 
         EmployeeIssue employeeIssue = new EmployeeIssue(employeeIssueDTO.getIssueId(),
          item,employee,employeeIssueDTO.getIssueDate(),employeeIssueDTO.getReturnDate());

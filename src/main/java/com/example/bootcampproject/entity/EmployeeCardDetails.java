@@ -28,7 +28,10 @@ public class EmployeeCardDetails {
 
     }
     public EmployeeCardDetails(Integer Id, Date issueDate, LoanCard loanCard, Employee employee){
-        
+        this.Id = Id;
+        this.issueDate = issueDate;
+        this.loanCard = loanCard;
+        this.employee = employee;
     }
     
 

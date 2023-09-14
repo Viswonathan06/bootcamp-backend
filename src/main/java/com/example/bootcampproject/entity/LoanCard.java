@@ -10,7 +10,7 @@ import lombok.Setter;
 public class LoanCard {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String loanId;
+    private Integer loanId;
     private String loanType;
     private Integer duration;
     @OneToOne(mappedBy = "loanCard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
