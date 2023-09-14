@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.example.bootcampproject.dto.EmployeeIssueDTO;
 import com.example.bootcampproject.entity.EmployeeIssue;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 
@@ -20,6 +21,6 @@ public interface EmployeeIssueService {
     //     @Valid @RequestBody EmployeeIssue employeeIssue) throws ResourceNotFoundException;
     public Map < String, Boolean > deleteEmployeeIssue(@PathVariable(value = "id") Long employeeIssueId)
     throws ResourceNotFoundException;
-    public ResponseEntity<String> registerEmployeeIssue(@Valid @RequestBody EmployeeIssue employeeIssue)
+    public ResponseEntity<EmployeeIssue> registerEmployeeIssue(@Valid @RequestBody EmployeeIssueDTO employeeIssueDTO)
      throws ResourceNotFoundException;
 }

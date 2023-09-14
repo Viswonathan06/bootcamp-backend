@@ -16,8 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bootcampproject.dto.EmployeeIssueDTO;
+import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.entity.EmployeeIssue;
+import com.example.bootcampproject.entity.Item;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
+import com.example.bootcampproject.repository.EmployeeRepository;
+import com.example.bootcampproject.repository.ItemRepository;
 import com.example.bootcampproject.service.EmployeeIssueService;
 
 import jakarta.validation.Valid;
@@ -27,6 +31,7 @@ import jakarta.validation.Valid;
 public class EmployeeIssueController {
     @Autowired
     private EmployeeIssueService employeeIssueService;
+    
 
     @GetMapping("/employeeissue/all")
     public List < EmployeeIssueDTO > getAllEmployeeIssue() {
@@ -47,9 +52,10 @@ public class EmployeeIssueController {
     }
 
     @PostMapping("/employeeissue/register")
-    public ResponseEntity<String> registerEmployeeIssue( @Valid @RequestBody EmployeeIssue employeeIssue)
+    public ResponseEntity<EmployeeIssue> registerEmployeeIssue( @Valid @RequestBody EmployeeIssueDTO employeeIssueDTO)
     throws ResourceNotFoundException {
-        return employeeIssueService.registerEmployeeIssue(employeeIssue);
+        
+        return employeeIssueService.registerEmployeeIssue(employeeIssueDTO);
     }
 
     @PostMapping("/employeeissue")

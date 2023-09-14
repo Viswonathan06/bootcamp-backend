@@ -12,9 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.example.bootcampproject.dto.EmployeeIssueDTO;
+import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.entity.EmployeeIssue;
+import com.example.bootcampproject.entity.Item;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.repository.EmployeeIssueRepository;
+import com.example.bootcampproject.repository.EmployeeRepository;
+import com.example.bootcampproject.repository.ItemRepository;
 
 import jakarta.validation.Valid;
 
@@ -22,9 +27,11 @@ import jakarta.validation.Valid;
 public class EmployeeIssueServiceImpl implements EmployeeIssueService{
     @Autowired
     private EmployeeIssueRepository employeeIssueRepository;
-    public EmployeeIssueServiceImpl(EmployeeIssueRepository employeeIssueRepository){
-        this.employeeIssueRepository = employeeIssueRepository;
-    }
+    @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
+    private ItemRepository itemRepository;
+    
 
     @Override
     public List < EmployeeIssue > getAllEmployeeIssue() {
@@ -54,10 +61,21 @@ public class EmployeeIssueServiceImpl implements EmployeeIssueService{
         return response;
     }
     @Override
-    public ResponseEntity<String> registerEmployeeIssue(@Valid @RequestBody EmployeeIssue employeeIssueDetails)
+    public ResponseEntity<EmployeeIssue> registerEmployeeIssue(@Valid @RequestBody EmployeeIssueDTO employeeIssueDTO)
      throws ResourceNotFoundException {
-        EmployeeIssue savedEmployeeIssue =  employeeIssueRepository.save(employeeIssueDetails);
-        return ResponseEntity.status(HttpStatus.OK).body("EmployeeIssue Registered!");
+        Item item = itemRepository.findById(Long.valueOf(employeeIssueDTO.getItem_id()))
+            .orElseThrow(() -> new ResourceNotFoundException("Item not found for this id :: " + employeeIssueDTO.getItem_id()));
+        Employee employee = employeeRepository.findById(Long.valueOf(employeeIssueDTO.getEmployee_id()))
+            .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeIssueDTO.getEmployee_id()));
+        
+        System.out.print(item.getItemId());
+        System.out.print(employee.getEmployeeName());
+
+
+        EmployeeIssue employeeIssue = new EmployeeIssue(employeeIssueDTO.getIssueId(),
+         item,employee,employeeIssueDTO.getIssueDate(),employeeIssueDTO.getReturnDate());
+        EmployeeIssue savedEmployeeIssue =  employeeIssueRepository.save(employeeIssue);
+        return ResponseEntity.status(HttpStatus.OK).body(savedEmployeeIssue);
     }
 
 }
