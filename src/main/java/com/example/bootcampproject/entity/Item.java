@@ -28,6 +28,8 @@ public class Item {
     private String itemCategory;
     @Column(nullable = false)
     private Integer itemValuation;
+    @OneToOne(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private LoanTransaction LoanTransaction; 
     
     
 }
