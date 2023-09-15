@@ -34,6 +34,8 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
     private ItemRepository itemRepository;
     @Autowired
     private LoanCardRepository loanCardRepository;
+    @Autowired
+    private LoanCardService loanCardService;
     
 
     @Override
@@ -71,6 +73,7 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
         Employee employee = employeeRepository.findById(Long.valueOf(loanTransactionDTO.getEmployeeId()))
             .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + loanTransactionDTO.getEmployeeId()));
         LoanCard loanCard = new LoanCard(item.getItemCategory(), loanTransactionDTO.getDuration());
+        // loanCardService.registerLoanCard(loanCard);
         LoanTransaction loanTransaction = new LoanTransaction(loanTransactionDTO.getTransactionId(),
             loanTransactionDTO.getTimestamp(), loanTransactionDTO.getAmount(), loanCard, employee, item);
         LoanTransaction savedLoanTransaction =  loanTransactionRepository.save(loanTransaction);

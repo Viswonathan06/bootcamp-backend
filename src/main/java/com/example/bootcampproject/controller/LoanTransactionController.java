@@ -47,7 +47,7 @@ public class LoanTransactionController {
         return loanTransactionService.getLoanTransactionById(loanTransactionId);
     }
 
-    @PostMapping("/transaction/register")
+    @PostMapping("/transaction/create")
     public ResponseEntity<LoanTransaction> registerLoanTransaction( @Valid @RequestBody LoanTransactionDTO loanTransactionDTO)
     throws ResourceNotFoundException {
         
