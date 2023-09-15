@@ -32,6 +32,7 @@ public class AdminCredentials {
 
     @Email(message="Invalid Email Address")
     private String emailId;
+    @NotBlank(message="Must be of a specific role")
     private String role = "ADMIN";
 
 

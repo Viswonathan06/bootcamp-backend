@@ -1,7 +1,9 @@
 package com.example.bootcampproject.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +29,7 @@ public class Item {
     @NotBlank(message="Item category cannot be blank")
     private String itemCategory;
     @Column(nullable = false)
+    @Positive(message = "Item Value must be positive")
     private Integer itemValuation;
     
     
