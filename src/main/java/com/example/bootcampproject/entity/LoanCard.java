@@ -20,13 +20,8 @@ public class LoanCard {
     @OneToOne(mappedBy = "loanCard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private EmployeeCardDetails employeeCardDetails; 
     @OneToOne(mappedBy = "loanCard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private LoanTransaction loanTransaction;    
-    public LoanCard(){
-        
-    }
-    public LoanCard(
-String loanType,
-Integer duration){
+    private LoanTransaction loanTransaction;
+    public LoanCard( String loanType, Integer duration){
         this.loanType = loanType;
         this.duration = duration;
     }

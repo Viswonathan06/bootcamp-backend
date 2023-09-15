@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +28,7 @@ public class LoanTransaction {
     @Column(name = "trans_time")
     private Date timestamp;
     @Column(name = "amount", nullable = false)
+    @Positive(message="Transaction amount must be positive")
     private Integer amount;
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "loan_card_id")
