@@ -50,6 +50,8 @@ public class Employee {
     private EmployeeCardDetails employeeCardDetails;
     @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private EmployeeIssue employeeIssue;
+    @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private LoanTransaction LoanTransaction; 
 
     public Employee(){
 

@@ -21,6 +21,6 @@ public interface AdminService {
     public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)
     throws ResourceNotFoundException;
     public ResponseEntity<Object> verifyAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails) throws ResourceNotFoundException;
-    public ResponseEntity<String> registerAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
+    public ResponseEntity<AdminCredentials> registerAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
      throws ResourceNotFoundException;
 }

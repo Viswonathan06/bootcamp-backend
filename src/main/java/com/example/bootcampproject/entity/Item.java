@@ -31,6 +31,8 @@ public class Item {
     @Column(nullable = false)
     @Positive(message = "Item Value must be positive")
     private Integer itemValuation;
+    @OneToOne(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private LoanTransaction LoanTransaction; 
     
     
 }

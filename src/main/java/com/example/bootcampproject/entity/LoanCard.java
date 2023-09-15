@@ -18,5 +18,17 @@ public class LoanCard {
     @Positive(message= "Duration of loan must be a positive value")
     private Integer duration;
     @OneToOne(mappedBy = "loanCard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private EmployeeCardDetails employeeCardDetails;    
+    private EmployeeCardDetails employeeCardDetails; 
+    @OneToOne(mappedBy = "loanCard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private LoanTransaction loanTransaction;    
+    public LoanCard(){
+        
+    }
+    public LoanCard(
+String loanType,
+Integer duration){
+        this.loanType = loanType;
+        this.duration = duration;
+    }
 }
+
