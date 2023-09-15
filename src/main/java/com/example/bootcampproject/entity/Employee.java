@@ -35,7 +35,7 @@ public class Employee {
     @Column(nullable = false)
     private String password;
     private String emailId;
-    private String role;
+    private String role = "EMPLOYEE";
 
     @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private EmployeeCardDetails employeeCardDetails;
@@ -59,8 +59,6 @@ public class Employee {
         this.employeeCardDetails=employeeCardDetails;
         this.employeeIssue = employeeIssue;
         this.emailId = emailId;
-        this.role = null;
-
     }
    
     
