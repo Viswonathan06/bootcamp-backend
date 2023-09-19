@@ -40,15 +40,24 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
     
 
     @Override
-    public List < LoanTransaction > getAllLoanTransaction() {
+    public List < LoanTransactionDTO > getAllLoanTransaction() {
         List <LoanTransactionDTO> loanList = new ArrayList();
+        List <LoanTransaction> ltrans =  loanTransactionRepository.findAll();
+        LoanTransactionDTO loanDto= new LoanTransactionDTO();
         for( LoanTransaction lt :ltrans){
-            LoanTransactionDTO loanDto = new LoanTransactionDTO(lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+            if(lt.getItem() == null){
+                 loanDto = new LoanTransactionDTO(lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
-            lt.getEmployee().getEmployeeId(), lt.getItem().getItemId(), lt.getLoanCard().getDuration());
+            lt.getEmployee().getEmployeeId(), null , lt.getLoanCard().getDuration());
+            }else{
+                 loanDto = new LoanTransactionDTO(lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+            lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
+            lt.getEmployee().getEmployeeId(),lt.getItem().getItemId() , lt.getLoanCard().getDuration());
+            }
+            
             loanList.add(loanDto);
         }
-        return loanTransactionRepository.findAll();
+        return loanList;
     }
 
     @Override

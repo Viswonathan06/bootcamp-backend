@@ -14,7 +14,7 @@ import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 
 public interface LoanTransactionService {
-    public List < LoanTransaction > getAllLoanTransaction();
+    public List < LoanTransactionDTO > getAllLoanTransaction();
     public ResponseEntity<List < LoanTransactionDTO >> getLoanTransactionByEmployeeId(Integer employeeId) ;
     public ResponseEntity < LoanTransaction > getLoanTransactionById(@PathVariable(value = "id") Long loanTransactionId) throws ResourceNotFoundException;
     public LoanTransaction createLoanTransaction(@Valid @RequestBody LoanTransaction loanTransaction);

@@ -31,14 +31,7 @@ public class LoanTransactionController {
 
     @GetMapping("/transaction/all")
     public List < LoanTransactionDTO > getAllLoanTransaction() {
-        List <LoanTransaction > transactionList =  loanTransactionService.getAllLoanTransaction();
-        List <LoanTransactionDTO> finalList = new ArrayList<>();
-        for(LoanTransaction transaction: transactionList){
-            LoanTransactionDTO transactionDto = new LoanTransactionDTO(transaction.getLoanCard().getLoanType(), transaction.getTransactionId(), transaction.getTimestamp(), transaction.getAmount(), transaction.getLoanCard().getLoanId(), transaction.getEmployee().getEmployeeId(),  transaction.getItem().getItemId(), transaction.getLoanCard().getDuration());
-            finalList.add(transactionDto);
-        }
-        return finalList;
-
+        return loanTransactionService.getAllLoanTransaction();
     }
 
     @GetMapping("/transaction/{id}")
@@ -56,16 +49,17 @@ public class LoanTransactionController {
     @PostMapping("/transaction/create")
     public ResponseEntity<LoanTransaction> registerLoanTransaction( @Valid @RequestBody LoanTransactionDTO loanTransactionDTO)
     throws ResourceNotFoundException {
-        
-        return loanTransactionService.registerLoanTransaction(loanTransactionDTO);
-    }
-
-    @PostMapping("/loan/create")
-    public ResponseEntity<LoanTransaction> registerLoan( @Valid @RequestBody LoanTransactionDTO loanTransactionDTO)
-    throws ResourceNotFoundException {
-        
+        if(loanTransactionDTO.getItemId() == null){
+            return loanTransactionService.registerLoanTransaction(loanTransactionDTO);
+        }
         return loanTransactionService.registerLoanTransaction(loanTransactionDTO, true);
     }
+
+    // @PostMapping("/loan/create")
+    // public ResponseEntity<LoanTransaction> registerLoan( @Valid @RequestBody LoanTransactionDTO loanTransactionDTO)
+    // throws ResourceNotFoundException {
+        
+    // }
 
     // @PostMapping("/transaction")
     // public LoanTransaction createLoanTransaction(@Valid @RequestBody LoanTransaction loanTransaction) {
