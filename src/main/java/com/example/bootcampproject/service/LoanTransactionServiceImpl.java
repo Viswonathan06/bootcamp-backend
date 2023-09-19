@@ -1,5 +1,6 @@
 package com.example.bootcampproject.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +41,30 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
 
     @Override
     public List < LoanTransaction > getAllLoanTransaction() {
+        List <LoanTransactionDTO> loanList = new ArrayList();
+        for( LoanTransaction lt :ltrans){
+            LoanTransactionDTO loanDto = new LoanTransactionDTO(lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+            lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
+            lt.getEmployee().getEmployeeId(), lt.getItem().getItemId(), lt.getLoanCard().getDuration());
+            loanList.add(loanDto);
+        }
         return loanTransactionRepository.findAll();
     }
+
+    @Override
+    public ResponseEntity<List < LoanTransactionDTO >> getLoanTransactionByEmployeeId(@PathVariable(value = "id") Integer employeeId) {
+        List <LoanTransaction> ltrans = loanTransactionRepository.findByEmployee_EmployeeId(employeeId);
+        List <LoanTransactionDTO> loanList = new ArrayList();
+        for( LoanTransaction lt :ltrans){
+            LoanTransactionDTO loanDto = new LoanTransactionDTO(lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+            lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
+            lt.getEmployee().getEmployeeId(), lt.getItem().getItemId(), lt.getLoanCard().getDuration());
+            loanList.add(loanDto);
+        }
+        // .orElseThrow(() -> new ResourceNotFoundException("LoanTransaction not found for this id :: " + loanTransactionId));
+        return ResponseEntity.ok().body(loanList);
+    }
+    
     @Override
     public ResponseEntity < LoanTransaction > getLoanTransactionById(@PathVariable(value = "id") Long loanTransactionId)
     throws ResourceNotFoundException {
@@ -76,6 +99,20 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
         // loanCardService.registerLoanCard(loanCard);
         LoanTransaction loanTransaction = new LoanTransaction(loanTransactionDTO.getTransactionId(),
             loanTransactionDTO.getTimestamp(), loanTransactionDTO.getAmount(), loanCard, employee, item);
+        LoanTransaction savedLoanTransaction =  loanTransactionRepository.save(loanTransaction);
+        return ResponseEntity.status(HttpStatus.OK).body(savedLoanTransaction);
+    }
+    @Override
+    public ResponseEntity<LoanTransaction> registerLoanTransaction(@Valid @RequestBody LoanTransactionDTO loanTransactionDTO, Boolean loanOrNot)
+     throws ResourceNotFoundException {
+        // Item item = itemRepository.findById(Long.valueOf(loanTransactionDTO.getItemId()))
+        //     .orElseThrow(() -> new ResourceNotFoundException("Item not found for this id :: " + loanTransactionDTO.getItemId()));
+        Employee employee = employeeRepository.findById(Long.valueOf(loanTransactionDTO.getEmployeeId()))
+            .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this username :: " + loanTransactionDTO.getEmployeeId()));
+        LoanCard loanCard = new LoanCard(loanTransactionDTO.getCategory(), loanTransactionDTO.getDuration());
+        // loanCardService.registerLoanCard(loanCard);
+        LoanTransaction loanTransaction = new LoanTransaction(loanTransactionDTO.getTransactionId(),
+            loanTransactionDTO.getTimestamp(), loanTransactionDTO.getAmount(), loanCard, employee, null);
         LoanTransaction savedLoanTransaction =  loanTransactionRepository.save(loanTransaction);
         return ResponseEntity.status(HttpStatus.OK).body(savedLoanTransaction);
     }

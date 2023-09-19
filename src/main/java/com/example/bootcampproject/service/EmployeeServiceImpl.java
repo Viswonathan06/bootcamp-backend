@@ -77,7 +77,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 
             Map<String, String> data = new HashMap<>();
-            data.put("role", "NULL");
+            data.put("role", employee.getRole());
+            data.put("username", employee.getUserName());
+
             return new ResponseEntity<>(data, HttpStatus.OK);
 
         }else{

@@ -16,8 +16,9 @@ public class LoanTransactionDTO {
     private Integer employeeId;
     private Integer itemId;
     private Integer duration;
+    private String category;
 
-    public LoanTransactionDTO(Integer transactionId,Date timestamp,Integer amount,Integer loanCardId,Integer employeeId,Integer itemId, Integer duration){
+    public LoanTransactionDTO(String category, Integer transactionId,Date timestamp,Integer amount,Integer loanCardId,Integer employeeId,Integer itemId, Integer duration){
         this.transactionId = transactionId;
         this.timestamp = timestamp;
         this.amount = amount;
@@ -25,6 +26,7 @@ public class LoanTransactionDTO {
         this.employeeId = employeeId;
         this.itemId = itemId;
         this.duration = duration;
+        this.category = category;
     }
     public LoanTransactionDTO(){
 

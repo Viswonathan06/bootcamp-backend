@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 
 public interface LoanTransactionService {
     public List < LoanTransaction > getAllLoanTransaction();
+    public ResponseEntity<List < LoanTransactionDTO >> getLoanTransactionByEmployeeId(Integer employeeId) ;
     public ResponseEntity < LoanTransaction > getLoanTransactionById(@PathVariable(value = "id") Long loanTransactionId) throws ResourceNotFoundException;
     public LoanTransaction createLoanTransaction(@Valid @RequestBody LoanTransaction loanTransaction);
     // public ResponseEntity < LoanTransaction > updateLoanTransaction(@PathVariable(value = "id") Long loanTransactionId,
@@ -22,5 +23,7 @@ public interface LoanTransactionService {
     public Map < String, Boolean > deleteLoanTransaction(@PathVariable(value = "id") Long loanTransactionId)
     throws ResourceNotFoundException;
     public ResponseEntity<LoanTransaction> registerLoanTransaction(@Valid @RequestBody LoanTransactionDTO loanTransactionDTO)
+     throws ResourceNotFoundException;
+     public ResponseEntity<LoanTransaction> registerLoanTransaction(@Valid @RequestBody LoanTransactionDTO loanTransactionDTO, Boolean loanOrNot)
      throws ResourceNotFoundException;
 }
