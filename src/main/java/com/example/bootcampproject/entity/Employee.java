@@ -18,13 +18,13 @@ public class Employee {
     private Integer employeeId;
 
     @Column(nullable = false)
-    @NotBlank(message="Name cannot be blank")
+    // @NotBlank(message="Name cannot be blank")
     private String employeeName;
-    @NotBlank(message="Designation cannot be blank")
+    // @NotBlank(message="Designation cannot be blank")
     private String designation;
-    @NotBlank(message="Department cannot be blank")
+    // @NotBlank(message="Department cannot be blank")
     private String department;
-    @NotBlank(message="Gender cannot be blank")
+    // @NotBlank(message="Gender cannot be blank")
     private String gender;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date dateOfBirth;

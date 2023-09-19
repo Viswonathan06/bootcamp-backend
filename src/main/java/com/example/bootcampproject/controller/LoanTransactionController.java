@@ -34,7 +34,7 @@ public class LoanTransactionController {
         List <LoanTransaction > transactionList =  loanTransactionService.getAllLoanTransaction();
         List <LoanTransactionDTO> finalList = new ArrayList<>();
         for(LoanTransaction transaction: transactionList){
-            LoanTransactionDTO transactionDto = new LoanTransactionDTO(transaction.getTransactionId(), transaction.getTimestamp(), transaction.getAmount(), transaction.getLoanCard().getLoanId(), transaction.getEmployee().getEmployeeId(),  transaction.getItem().getItemId(), transaction.getLoanCard().getDuration());
+            LoanTransactionDTO transactionDto = new LoanTransactionDTO(transaction.getLoanCard().getLoanType(), transaction.getTransactionId(), transaction.getTimestamp(), transaction.getAmount(), transaction.getLoanCard().getLoanId(), transaction.getEmployee().getEmployeeId(),  transaction.getItem().getItemId(), transaction.getLoanCard().getDuration());
             finalList.add(transactionDto);
         }
         return finalList;
@@ -46,6 +46,12 @@ public class LoanTransactionController {
     throws ResourceNotFoundException {
         return loanTransactionService.getLoanTransactionById(loanTransactionId);
     }
+    @GetMapping("/transaction/employee/{id}")
+    public ResponseEntity<List<LoanTransactionDTO>> getLoanTransactionByEmployeeId(@PathVariable(value = "id") Integer loanTransactionId)
+    throws ResourceNotFoundException {
+        return loanTransactionService.getLoanTransactionByEmployeeId(loanTransactionId);
+    }
+
 
     @PostMapping("/transaction/create")
     public ResponseEntity<LoanTransaction> registerLoanTransaction( @Valid @RequestBody LoanTransactionDTO loanTransactionDTO)
@@ -54,10 +60,17 @@ public class LoanTransactionController {
         return loanTransactionService.registerLoanTransaction(loanTransactionDTO);
     }
 
-    @PostMapping("/transaction")
-    public LoanTransaction createLoanTransaction(@Valid @RequestBody LoanTransaction loanTransaction) {
-        return loanTransactionService.createLoanTransaction(loanTransaction);
+    @PostMapping("/loan/create")
+    public ResponseEntity<LoanTransaction> registerLoan( @Valid @RequestBody LoanTransactionDTO loanTransactionDTO)
+    throws ResourceNotFoundException {
+        
+        return loanTransactionService.registerLoanTransaction(loanTransactionDTO, true);
     }
+
+    // @PostMapping("/transaction")
+    // public LoanTransaction createLoanTransaction(@Valid @RequestBody LoanTransaction loanTransaction) {
+    //     return loanTransactionService.createLoanTransaction(loanTransaction, true);
+    // }
 
     // @PutMapping("/loanTransaction/{id}")
     // public ResponseEntity < LoanTransaction > updateLoanTransaction(@PathVariable(value = "id") Long loanTransactionId,

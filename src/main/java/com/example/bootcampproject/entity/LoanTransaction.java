@@ -34,7 +34,7 @@ public class LoanTransaction {
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "employee_id")
     private Employee employee;
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "item_id")
     private Item item;
     public LoanTransaction(){
