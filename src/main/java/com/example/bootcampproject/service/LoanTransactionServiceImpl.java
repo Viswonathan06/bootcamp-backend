@@ -46,11 +46,11 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
         LoanTransactionDTO loanDto= new LoanTransactionDTO();
         for( LoanTransaction lt :ltrans){
             if(lt.getItem() == null){
-                 loanDto = new LoanTransactionDTO(lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+                 loanDto = new LoanTransactionDTO(false, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
             lt.getEmployee().getEmployeeId(), null , lt.getLoanCard().getDuration());
             }else{
-                 loanDto = new LoanTransactionDTO(lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+                 loanDto = new LoanTransactionDTO(true, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
             lt.getEmployee().getEmployeeId(),lt.getItem().getItemId() , lt.getLoanCard().getDuration());
             }
@@ -64,10 +64,18 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
     public ResponseEntity<List < LoanTransactionDTO >> getLoanTransactionByEmployeeId(@PathVariable(value = "id") Integer employeeId) {
         List <LoanTransaction> ltrans = loanTransactionRepository.findByEmployee_EmployeeId(employeeId);
         List <LoanTransactionDTO> loanList = new ArrayList();
+        LoanTransactionDTO loanDto= new LoanTransactionDTO();
         for( LoanTransaction lt :ltrans){
-            LoanTransactionDTO loanDto = new LoanTransactionDTO(lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+            if(lt.getItem() == null){
+                 loanDto = new LoanTransactionDTO(false, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
-            lt.getEmployee().getEmployeeId(), lt.getItem().getItemId(), lt.getLoanCard().getDuration());
+            lt.getEmployee().getEmployeeId(), null , lt.getLoanCard().getDuration());
+            }else{
+                 loanDto = new LoanTransactionDTO(true, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+            lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
+            lt.getEmployee().getEmployeeId(),lt.getItem().getItemId() , lt.getLoanCard().getDuration());
+            }
+            
             loanList.add(loanDto);
         }
         // .orElseThrow(() -> new ResourceNotFoundException("LoanTransaction not found for this id :: " + loanTransactionId));

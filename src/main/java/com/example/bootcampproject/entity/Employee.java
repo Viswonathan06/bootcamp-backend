@@ -1,7 +1,11 @@
 package com.example.bootcampproject.entity;
 import java.sql.Date;
 
+import java.util.*;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -41,8 +45,9 @@ public class Employee {
     private EmployeeCardDetails employeeCardDetails;
     @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private EmployeeIssue employeeIssue;
-    @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private LoanTransaction LoanTransaction; 
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<LoanTransaction> LoanTransaction; 
 
     public Employee(){
 
