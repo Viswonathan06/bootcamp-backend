@@ -18,8 +18,8 @@ public interface LoanTransactionService {
     public ResponseEntity<List < LoanTransactionDTO >> getLoanTransactionByEmployeeId(Integer employeeId) ;
     public ResponseEntity < LoanTransaction > getLoanTransactionById(@PathVariable(value = "id") Long loanTransactionId) throws ResourceNotFoundException;
     public LoanTransaction createLoanTransaction(@Valid @RequestBody LoanTransaction loanTransaction);
-    // public ResponseEntity < LoanTransaction > updateLoanTransaction(@PathVariable(value = "id") Long loanTransactionId,
-    //     @Valid @RequestBody LoanTransaction loanTransaction) throws ResourceNotFoundException;
+    public ResponseEntity < LoanTransactionDTO > updateLoanTransaction(@PathVariable(value = "id") Long loanTransactionId,
+        @Valid @RequestBody LoanTransactionDTO loanTransaction) throws ResourceNotFoundException;
     public Map < String, Boolean > deleteLoanTransaction(@PathVariable(value = "id") Long loanTransactionId)
     throws ResourceNotFoundException;
     public ResponseEntity<LoanTransaction> registerLoanTransaction(@Valid @RequestBody LoanTransactionDTO loanTransactionDTO)

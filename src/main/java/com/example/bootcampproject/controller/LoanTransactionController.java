@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bootcampproject.dto.LoanTransactionDTO;
+import com.example.bootcampproject.entity.Item;
 import com.example.bootcampproject.entity.LoanTransaction;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.service.LoanTransactionService;
@@ -45,6 +47,11 @@ public class LoanTransactionController {
         return loanTransactionService.getLoanTransactionByEmployeeId(loanTransactionId);
     }
 
+    @PutMapping("/transaction/{id}")
+    public ResponseEntity < LoanTransactionDTO > updateLoanTransaction(@PathVariable(value = "id") Long transactionId,
+        @Valid @RequestBody LoanTransactionDTO loanTransaction) throws ResourceNotFoundException {
+        return loanTransactionService.updateLoanTransaction(transactionId, loanTransaction);
+    }
 
     @PostMapping("/transaction/create")
     public ResponseEntity<LoanTransaction> registerLoanTransaction( @Valid @RequestBody LoanTransactionDTO loanTransactionDTO)
