@@ -58,7 +58,7 @@ public class AdminController {
     @PutMapping("/admincredentials/{id}")
     public ResponseEntity < AdminCredentials > updateEmployee(@PathVariable(value = "id") Long employeeId,
         @Valid @RequestBody AdminCredentials employeeDetails) throws ResourceNotFoundException {
-        return adminService.updateEmployee(employeeId, employeeDetails);
+        return adminService.updateAdmin(employeeId, employeeDetails);
     }
 
     @DeleteMapping("/admincredentials/{id}")
