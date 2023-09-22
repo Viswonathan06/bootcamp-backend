@@ -36,10 +36,11 @@ public class LoanTransaction {
     private LoanCard loanCard;
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "employee_id")
-    @JsonBackReference
+    @JsonBackReference(value = "employee_transaction")
     private Employee employee;
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @ManyToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "item_id")
+    @JsonBackReference(value = "item_transaction")
     private Item item;
     public LoanTransaction(){
 

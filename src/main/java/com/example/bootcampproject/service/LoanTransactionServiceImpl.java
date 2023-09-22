@@ -131,6 +131,8 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
         LoanTransaction loanTransaction = new LoanTransaction(loanTransactionDTO.getTransactionId(),
             loanTransactionDTO.getTimestamp(), loanTransactionDTO.getAmount(), loanCard, employee, null);
         LoanTransaction savedLoanTransaction =  loanTransactionRepository.save(loanTransaction);
+        employee.setBalance(employee.getBalance()+loanTransactionDTO.getAmount());
+        System.out.println(loanTransactionDTO.getAmount()+employee.getBalance());
         return ResponseEntity.status(HttpStatus.OK).body(savedLoanTransaction);
     }
 }

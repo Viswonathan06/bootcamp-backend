@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.bootcampproject.dto.EmployeeDTO;
 import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.service.EmployeeService;
@@ -27,7 +29,7 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping("/employee/all")
-    public List < Employee > getAllEmployee() {
+    public List < EmployeeDTO > getAllEmployee() {
         return employeeService.getAllEmployee();
     }
 
@@ -54,11 +56,11 @@ public class EmployeeController {
         return employeeService.createEmployee(employee);
     }
 
-    // @PutMapping("/employee/{id}")
-    // public ResponseEntity < Employee > updateEmployee(@PathVariable(value = "id") Long employeeId,
-    //     @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
-    //     return employeeService.updateEmployee(employeeId, employeeDetails);
-    // }
+    @PutMapping("/employee/{id}")
+    public ResponseEntity < Employee > updateEmployee(@PathVariable(value = "id") Long employeeId,
+        @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
+        return employeeService.updateEmployee(employeeId, employeeDetails);
+    }
 
     @DeleteMapping("/employee/{id}")
     public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)

@@ -1,5 +1,9 @@
 package com.example.bootcampproject.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -28,8 +32,9 @@ public class Item {
     private String itemCategory;
     @Column(nullable = false)
     private Integer itemValuation;
-    @OneToOne(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private LoanTransaction LoanTransaction; 
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "item_transaction")
+    private List<LoanTransaction> LoanTransaction; 
     
     
 }

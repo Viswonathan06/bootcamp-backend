@@ -16,7 +16,7 @@ public interface AdminService {
     public List < AdminCredentials > getAllAdminCredentials();
     public ResponseEntity < AdminCredentials > getAdminCredentialsById(@PathVariable(value = "id") Long employeeId) throws ResourceNotFoundException;
     public AdminCredentials createAdminCredentials(@Valid @RequestBody AdminCredentials adminCredentials);
-    public ResponseEntity < AdminCredentials > updateEmployee(@PathVariable(value = "id") Long employeeId,
+    public ResponseEntity < AdminCredentials > updateAdmin(@PathVariable(value = "id") Long employeeId,
         @Valid @RequestBody AdminCredentials employeeDetails) throws ResourceNotFoundException;
     public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)
     throws ResourceNotFoundException;

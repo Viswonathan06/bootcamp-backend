@@ -1,14 +1,22 @@
 package com.example.bootcampproject.entity;
 import java.sql.Date;
+import java.util.List;
 
-import java.util.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,13 +48,16 @@ public class Employee {
     private String password;
     private String emailId;
     private String role = "EMPLOYEE";
+    @Column(nullable=false)
+    @Min(value = 0)
+    private Integer balance = 0;
 
     @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private EmployeeCardDetails employeeCardDetails;
     @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private EmployeeIssue employeeIssue;
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "employee_transaction")
     private List<LoanTransaction> LoanTransaction; 
 
     public Employee(){

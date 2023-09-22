@@ -51,7 +51,7 @@ public class AdminServiceImpl implements AdminService{
         return adminRepository.save(adminCredentials);
     }
     @Override
-    public ResponseEntity < AdminCredentials > updateEmployee(@PathVariable(value = "id") Long employeeId,
+    public ResponseEntity < AdminCredentials > updateAdmin(@PathVariable(value = "id") Long employeeId,
         @Valid @RequestBody AdminCredentials employeeDetails) throws ResourceNotFoundException {
         AdminCredentials adminCredentials = adminRepository.findById(employeeId)
             .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this id :: " + employeeId));
