@@ -31,6 +31,8 @@ public class LoanTransaction {
     private Date timestamp;
     @Column(name = "amount", nullable = false)
     private Integer amount;
+    @Column(name = "status", nullable = false)
+    private String status;
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "loan_card_id")
     private LoanCard loanCard;
@@ -45,12 +47,13 @@ public class LoanTransaction {
     public LoanTransaction(){
 
     }
-    public LoanTransaction(Integer transactionId,Date timestamp,Integer amount,LoanCard loanCard,Employee employee,Item item){
+    public LoanTransaction(String status, Integer transactionId,Date timestamp,Integer amount,LoanCard loanCard,Employee employee,Item item){
         this.transactionId = transactionId;
         this.timestamp = new Date();
         this.amount = amount;
         this.loanCard = loanCard;
         this.employee = employee;
         this.item = item;
+        this.status = status;
     }
 }

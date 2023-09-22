@@ -46,11 +46,11 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
         LoanTransactionDTO loanDto= new LoanTransactionDTO();
         for( LoanTransaction lt :ltrans){
             if(lt.getItem() == null){
-                 loanDto = new LoanTransactionDTO(false, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+                 loanDto = new LoanTransactionDTO("PENDING", false, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
             lt.getEmployee().getEmployeeId(), null , lt.getLoanCard().getDuration());
             }else{
-                 loanDto = new LoanTransactionDTO(true, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+                 loanDto = new LoanTransactionDTO("PENDING", true, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
             lt.getEmployee().getEmployeeId(),lt.getItem().getItemId() , lt.getLoanCard().getDuration());
             }
@@ -67,11 +67,11 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
         LoanTransactionDTO loanDto= new LoanTransactionDTO();
         for( LoanTransaction lt :ltrans){
             if(lt.getItem() == null){
-                 loanDto = new LoanTransactionDTO(false, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+                 loanDto = new LoanTransactionDTO("PENDING",false, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
             lt.getEmployee().getEmployeeId(), null , lt.getLoanCard().getDuration());
             }else{
-                 loanDto = new LoanTransactionDTO(true, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+                 loanDto = new LoanTransactionDTO("PENDING", true , lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
             lt.getEmployee().getEmployeeId(),lt.getItem().getItemId() , lt.getLoanCard().getDuration());
             }
@@ -108,13 +108,14 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
     @Override
     public ResponseEntity<LoanTransaction> registerLoanTransaction(@Valid @RequestBody LoanTransactionDTO loanTransactionDTO)
      throws ResourceNotFoundException {
+        loanTransactionDTO.setStatus("PENDING");
         Item item = itemRepository.findById(Long.valueOf(loanTransactionDTO.getItemId()))
             .orElseThrow(() -> new ResourceNotFoundException("Item not found for this id :: " + loanTransactionDTO.getItemId()));
         Employee employee = employeeRepository.findById(Long.valueOf(loanTransactionDTO.getEmployeeId()))
             .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + loanTransactionDTO.getEmployeeId()));
         LoanCard loanCard = new LoanCard(item.getItemCategory(), loanTransactionDTO.getDuration());
         // loanCardService.registerLoanCard(loanCard);
-        LoanTransaction loanTransaction = new LoanTransaction(loanTransactionDTO.getTransactionId(),
+        LoanTransaction loanTransaction = new LoanTransaction(loanTransactionDTO.getStatus(),loanTransactionDTO.getTransactionId(),
             loanTransactionDTO.getTimestamp(), loanTransactionDTO.getAmount(), loanCard, employee, item);
         LoanTransaction savedLoanTransaction =  loanTransactionRepository.save(loanTransaction);
         return ResponseEntity.status(HttpStatus.OK).body(savedLoanTransaction);
@@ -122,13 +123,12 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
     @Override
     public ResponseEntity<LoanTransaction> registerLoanTransaction(@Valid @RequestBody LoanTransactionDTO loanTransactionDTO, Boolean loanOrNot)
      throws ResourceNotFoundException {
-        // Item item = itemRepository.findById(Long.valueOf(loanTransactionDTO.getItemId()))
-        //     .orElseThrow(() -> new ResourceNotFoundException("Item not found for this id :: " + loanTransactionDTO.getItemId()));
+        loanTransactionDTO.setStatus("PENDING");
         Employee employee = employeeRepository.findById(Long.valueOf(loanTransactionDTO.getEmployeeId()))
             .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this username :: " + loanTransactionDTO.getEmployeeId()));
         LoanCard loanCard = new LoanCard(loanTransactionDTO.getCategory(), loanTransactionDTO.getDuration());
         // loanCardService.registerLoanCard(loanCard);
-        LoanTransaction loanTransaction = new LoanTransaction(loanTransactionDTO.getTransactionId(),
+        LoanTransaction loanTransaction = new LoanTransaction(loanTransactionDTO.getStatus(),loanTransactionDTO.getTransactionId(),
             loanTransactionDTO.getTimestamp(), loanTransactionDTO.getAmount(), loanCard, employee, null);
         LoanTransaction savedLoanTransaction =  loanTransactionRepository.save(loanTransaction);
         employee.setBalance(employee.getBalance()+loanTransactionDTO.getAmount());
