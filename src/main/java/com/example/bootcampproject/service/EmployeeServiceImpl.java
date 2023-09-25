@@ -54,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public ResponseEntity < Employee > updateEmployee(@PathVariable(value = "id") Long employeeId,
+    public ResponseEntity < List<EmployeeDTO> > updateEmployee(@PathVariable(value = "id") Long employeeId,
         @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException{
         Employee employee = employeeRepository.findById(employeeId)
             .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
@@ -69,8 +69,19 @@ public class EmployeeServiceImpl implements EmployeeService{
 
         employee.setUserName(employeeDetails.getUserName());
         employee.setPassword(employeeDetails.getPassword());
+         List<EmployeeDTO> empdtos =  new ArrayList();
+
+        List<LoanTransaction> loans = employee.getLoanTransaction();
+        List<Integer> loanIDs = new ArrayList();
+
+        for(LoanTransaction loan : loans){
+            loanIDs.add(loan.getTransactionId());
+        }
+        EmployeeDTO temp = new EmployeeDTO(employee.getBalance(), employee.getEmployeeId(), employee.getUserName(), employee.getEmailId(), employee.getPassword(), employee.getEmployeeName(), employee.getDepartment(), employee.getDesignation(), employee.getGender(), employee.getDateOfBirth(), employee.getDateOfJoining(), loanIDs );
+
         final Employee updatedEmployee = employeeRepository.save(employee);
-        return ResponseEntity.ok(updatedEmployee);
+        empdtos.add(temp);
+        return ResponseEntity.ok(empdtos);
     }
 
     @Override

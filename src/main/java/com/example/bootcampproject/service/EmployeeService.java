@@ -17,7 +17,7 @@ public interface EmployeeService {
     public List < EmployeeDTO > getAllEmployee();
     public ResponseEntity < Employee > getEmployeeById(@PathVariable(value = "id") Long employeeId) throws ResourceNotFoundException;
     public Employee createEmployee(@Valid @RequestBody Employee employee);
-    public ResponseEntity < Employee > updateEmployee(@PathVariable(value = "id") Long employeeId,
+    public ResponseEntity < List<EmployeeDTO> > updateEmployee(@PathVariable(value = "id") Long employeeId,
         @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException;
     public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)
     throws ResourceNotFoundException;

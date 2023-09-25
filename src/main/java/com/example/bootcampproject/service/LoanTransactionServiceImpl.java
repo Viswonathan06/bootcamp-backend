@@ -61,7 +61,7 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
     }
 
     @Override
-    public ResponseEntity < LoanTransactionDTO > updateLoanTransaction(@PathVariable(value = "id") Long loanTransactionId,
+    public ResponseEntity < List<LoanTransactionDTO> > updateLoanTransaction(@PathVariable(value = "id") Long loanTransactionId,
         @Valid @RequestBody LoanTransactionDTO loanTransaction) throws ResourceNotFoundException{
         LoanTransaction loanTransactionNew = loanTransactionRepository.findById(loanTransactionId)
             .orElseThrow(() -> new ResourceNotFoundException("Loan not found for this id :: " + loanTransactionId));
@@ -69,7 +69,9 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
         loanTransactionNew.setStatus(loanTransaction.getStatus());
         final LoanTransaction updatedTransaction = loanTransactionRepository.save(loanTransactionNew);
         loanTransaction.setStatus(updatedTransaction.getStatus());
-        return ResponseEntity.ok(loanTransaction);
+        List<LoanTransactionDTO> listObj = new ArrayList();
+        listObj.add(loanTransaction);
+        return ResponseEntity.ok(listObj);
     }
 
     @Override

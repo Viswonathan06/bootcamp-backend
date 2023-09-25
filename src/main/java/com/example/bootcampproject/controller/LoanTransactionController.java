@@ -48,7 +48,7 @@ public class LoanTransactionController {
     }
 
     @PutMapping("/transaction/{id}")
-    public ResponseEntity < LoanTransactionDTO > updateLoanTransaction(@PathVariable(value = "id") Long transactionId,
+    public ResponseEntity <  List<LoanTransactionDTO> > updateLoanTransaction(@PathVariable(value = "id") Long transactionId,
         @Valid @RequestBody LoanTransactionDTO loanTransaction) throws ResourceNotFoundException {
         return loanTransactionService.updateLoanTransaction(transactionId, loanTransaction);
     }

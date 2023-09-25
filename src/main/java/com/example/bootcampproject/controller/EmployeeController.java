@@ -57,7 +57,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/employee/{id}")
-    public ResponseEntity < Employee > updateEmployee(@PathVariable(value = "id") Long employeeId,
+    public ResponseEntity < List<EmployeeDTO> > updateEmployee(@PathVariable(value = "id") Long employeeId,
         @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException {
         return employeeService.updateEmployee(employeeId, employeeDetails);
     }
