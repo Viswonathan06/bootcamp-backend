@@ -46,11 +46,11 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
         LoanTransactionDTO loanDto= new LoanTransactionDTO();
         for( LoanTransaction lt :ltrans){
             if(lt.getItem() == null){
-                 loanDto = new LoanTransactionDTO("PENDING", false, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+                 loanDto = new LoanTransactionDTO(lt.getStatus(), false, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
             lt.getEmployee().getEmployeeId(), null , lt.getLoanCard().getDuration());
             }else{
-                 loanDto = new LoanTransactionDTO("PENDING", true, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+                 loanDto = new LoanTransactionDTO(lt.getStatus(), true, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
             lt.getEmployee().getEmployeeId(),lt.getItem().getItemId() , lt.getLoanCard().getDuration());
             }
@@ -68,6 +68,7 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
 
         loanTransactionNew.setStatus(loanTransaction.getStatus());
         final LoanTransaction updatedTransaction = loanTransactionRepository.save(loanTransactionNew);
+        loanTransaction.setStatus(updatedTransaction.getStatus());
         return ResponseEntity.ok(loanTransaction);
     }
 
@@ -78,11 +79,11 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
         LoanTransactionDTO loanDto= new LoanTransactionDTO();
         for( LoanTransaction lt :ltrans){
             if(lt.getItem() == null){
-                 loanDto = new LoanTransactionDTO("PENDING",false, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+                 loanDto = new LoanTransactionDTO(lt.getStatus(),false, lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
             lt.getEmployee().getEmployeeId(), null , lt.getLoanCard().getDuration());
             }else{
-                 loanDto = new LoanTransactionDTO("PENDING", true , lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
+                 loanDto = new LoanTransactionDTO(lt.getStatus(), true , lt.getLoanCard().getLoanType(),lt.getTransactionId(), 
             lt.getTimestamp(), lt.getAmount(), lt.getLoanCard().getLoanId(), 
             lt.getEmployee().getEmployeeId(),lt.getItem().getItemId() , lt.getLoanCard().getDuration());
             }
