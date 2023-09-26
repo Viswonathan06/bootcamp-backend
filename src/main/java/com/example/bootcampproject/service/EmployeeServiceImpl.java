@@ -80,7 +80,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         EmployeeDTO temp = new EmployeeDTO(employee.getBalance(), employee.getEmployeeId(), employee.getUserName(), employee.getEmailId(), employee.getPassword(), employee.getEmployeeName(), employee.getDepartment(), employee.getDesignation(), employee.getGender(), employee.getDateOfBirth(), employee.getDateOfJoining(), loanIDs );
 
         final Employee updatedEmployee = employeeRepository.save(employee);
-        empdtos.add(temp);
+        empdtos = getAllEmployee();
         return ResponseEntity.ok(empdtos);
     }
 
