@@ -77,7 +77,7 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ResponseEntity < Item > updateItem(@PathVariable(value = "id") Long itemId,
+    public ResponseEntity < List<ItemDTO> > updateItem(@PathVariable(value = "id") Long itemId,
         @Valid @RequestBody Item item) throws ResourceNotFoundException{
         Item itemOld = itemRepository.findById(itemId)
             .orElseThrow(() -> new ResourceNotFoundException("Item not found for this id :: " + itemId));
@@ -89,7 +89,8 @@ public class ItemServiceImpl implements ItemService{
         itemOld.setItemValuation(item.getItemValuation());
 
         final Item updatedItem = itemRepository.save(itemOld);
-        return ResponseEntity.ok(updatedItem);
+        List<ItemDTO> itemdtos = getAllItem();
+        return ResponseEntity.ok(itemdtos);
     }
     
 }
