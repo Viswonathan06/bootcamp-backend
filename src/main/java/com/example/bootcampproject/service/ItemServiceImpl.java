@@ -86,8 +86,8 @@ public class ItemServiceImpl implements ItemService{
         itemOld.setItemValuation(item.getItemValuation());
 
         final Item updatedItem = itemRepository.save(itemOld);
-
         return ResponseEntity.ok(getAllItem());
+
     }
     
 }

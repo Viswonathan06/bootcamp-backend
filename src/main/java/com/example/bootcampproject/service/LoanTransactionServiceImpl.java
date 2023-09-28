@@ -69,8 +69,7 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
         loanTransactionNew.setStatus(loanTransaction.getStatus());
         final LoanTransaction updatedTransaction = loanTransactionRepository.save(loanTransactionNew);
         loanTransaction.setStatus(updatedTransaction.getStatus());
-        List<LoanTransactionDTO> listObj = new ArrayList();
-        listObj.add(loanTransaction);
+        List<LoanTransactionDTO> listObj = getAllLoanTransaction();
         return ResponseEntity.ok(listObj);
     }
 
