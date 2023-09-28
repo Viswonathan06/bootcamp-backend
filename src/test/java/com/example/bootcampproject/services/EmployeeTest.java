@@ -1,0 +1,174 @@
+package com.example.bootcampproject.services;
+import com.example.bootcampproject.dto.EmployeeDTO;
+import com.example.bootcampproject.entity.Employee;
+import com.example.bootcampproject.entity.EmployeeCardDetails;
+import com.example.bootcampproject.entity.EmployeeIssue;
+import com.example.bootcampproject.entity.Item;
+import com.example.bootcampproject.entity.LoanCard;
+import com.example.bootcampproject.entity.LoanTransaction;
+import com.example.bootcampproject.entity.Employee;
+import com.example.bootcampproject.exceptions.ResourceNotFoundException;
+import com.example.bootcampproject.repository.ItemRepository;
+import com.example.bootcampproject.repository.EmployeeRepository;
+import com.example.bootcampproject.service.ItemServiceImpl;
+import com.example.bootcampproject.service.EmployeeService;
+import com.example.bootcampproject.service.EmployeeServiceImpl;
+
+import org.junit.jupiter.api.extension.*;
+
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+
+import java.util.Optional;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import static org.mockito.BDDMockito.*;
+import org.mockito.Mock;
+import org.mockito.ArgumentMatchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import org.mockito.Mockito.*;
+import org.mockito.quality.Strictness;
+
+
+
+@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
+public class EmployeeTest {
+
+    @Mock
+    private EmployeeRepository employeeRepository;
+    @Mock
+    private ItemRepository itemRepository;
+    @InjectMocks
+    private EmployeeServiceImpl employeeServiceImpl;
+    @InjectMocks
+    private ItemServiceImpl itemServiceImpl;
+    private LoanTransaction loanTransaction;
+    private EmployeeIssue employeeIssue;
+    private EmployeeCardDetails employeeCardDetails;
+    private LoanCard loanCard;
+    private Item item;
+    private  Employee employee;
+    
+    @BeforeEach void setUpLoan(){
+        
+        employee = new Employee(
+            1,
+            "U143245",
+            "ab123c@gmail.com",
+            "123456",
+            "Abu Sharma",
+            "Developer",
+            "CSBBT",
+            "Male",
+            Date.valueOf("1978-12-17"),
+            Date.valueOf("2014-08-22"),
+            employeeCardDetails,
+            employeeIssue);
+        item = new Item(1, "HIGH TOP","INSTOCK", "NIKE", "CLOTHING", 1234);
+        loanCard = new LoanCard("CLOTHING", 123);
+        loanTransaction = new LoanTransaction("pending", 123, Date.valueOf("2023-09-15"), 1234, loanCard, employee, item);
+        System.out.println("Initialized!");
+    }
+
+    @Test void getAllLoan(){
+        employeeServiceImpl.getAllEmployee();
+        verify(employeeRepository).findAll();
+    }
+
+    @Test
+    public void givenemployeeId_thenReturnemployeeObj(){
+        given(employeeRepository.findById(123L)).willReturn(Optional.of(employee));
+
+        // when
+        try{
+            Employee savedLoan = employeeServiceImpl.getEmployeeById(Long.valueOf(employee.getEmployeeId())).getBody();
+            assertThat(savedLoan).isNotNull();
+        }catch(ResourceNotFoundException e){
+            System.out.println(e);
+        }
+
+    }
+
+    @Test
+    public void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee(){
+        // given - precondition or setup
+        given(employeeRepository.save(employee)).willReturn(employee);
+        employee.setEmailId("ram@gmail.com");
+        employee.setGender("Male");
+        // when -  action or the behaviour that we are going test
+        
+        try{
+            List<EmployeeDTO> updatedemployees= employeeServiceImpl.updateEmployee(Long.valueOf(employee.getEmployeeId()), employee).getBody();
+            EmployeeDTO updatedemployee = new EmployeeDTO();
+            for(EmployeeDTO temp : updatedemployees){
+                if(temp.getEmployeeId() == employee.getEmployeeId()){
+                    updatedemployee = temp;
+                }
+            }
+             
+            // then - verify the output
+            assertThat(updatedemployee.getEmailId()).isEqualTo("ram@gmail.com"); 
+            assertThat(updatedemployee.getGender()).isEqualTo("Male"); 
+
+        }catch(ResourceNotFoundException E){
+            System.out.println(E);
+        }
+    }
+
+
+    @Test
+    public void givenEmployeeObject_whenSaveEmployee_thenReturnEmployeeObject(){
+        // given - precondition or setup
+        given(employeeRepository.findById(Long.valueOf(employee.getEmployeeId())))
+                .willReturn(Optional.empty());
+
+        
+        System.out.println(employeeRepository);
+        System.out.println(employeeServiceImpl);
+        // when -  action or the behaviour that we are going test
+        try{
+            Employee savedemployee = employeeServiceImpl.registerEmployee(employee).getBody();
+            System.out.println(savedemployee);
+            assertThat(savedemployee).isNotNull();
+            
+        }catch(ResourceNotFoundException e){
+            System.out.print(e);
+        }
+
+        // then - verify the output
+    }
+
+    @Test
+    public void givenEmployeeId_whenDeleteEmployee_thenNothing(){
+        // given - precondition or setup
+        long employeeId = 1L;
+        
+        willDoNothing().given(employeeRepository).deleteById(employeeId);
+
+        // when -  action or the behaviour that we are going test
+        try{
+            
+            employeeServiceImpl.deleteEmployee(employeeId);
+        }catch(ResourceNotFoundException e){
+            System.out.println(e);
+        }
+
+        // then - verify the output
+        verify(employeeRepository, times(1)).deleteById(employeeId);
+    }
+
+
+    
+}
