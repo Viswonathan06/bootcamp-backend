@@ -61,10 +61,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public Map < String, Boolean > deleteItem(@PathVariable(value = "id") Long itemId)
     throws ResourceNotFoundException {
-        Item item = itemRepository.findById(itemId)
-            .orElseThrow(() -> new ResourceNotFoundException("Item not found for this id :: " + itemId));
-
-        itemRepository.delete(item);
+            itemRepository.deleteById(itemId);
         Map < String, Boolean > response = new HashMap < > ();
         response.put("deleted", Boolean.TRUE);
         return response;
@@ -77,7 +74,7 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ResponseEntity < Item > updateItem(@PathVariable(value = "id") Long itemId,
+    public ResponseEntity < List<ItemDTO> > updateItem(@PathVariable(value = "id") Long itemId,
         @Valid @RequestBody Item item) throws ResourceNotFoundException{
         Item itemOld = itemRepository.findById(itemId)
             .orElseThrow(() -> new ResourceNotFoundException("Item not found for this id :: " + itemId));
@@ -89,7 +86,8 @@ public class ItemServiceImpl implements ItemService{
         itemOld.setItemValuation(item.getItemValuation());
 
         final Item updatedItem = itemRepository.save(itemOld);
-        return ResponseEntity.ok(updatedItem);
+
+        return ResponseEntity.ok(getAllItem());
     }
     
 }

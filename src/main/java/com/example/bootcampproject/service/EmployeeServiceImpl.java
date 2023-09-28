@@ -99,10 +99,10 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)
     throws ResourceNotFoundException {
-        Employee employee = employeeRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
+        // Employee employee = employeeRepository.findById(employeeId)
+        //     .orElseThrow(() -> new ResourceNotFoundException("Employee not found for this id :: " + employeeId));
 
-        employeeRepository.delete(employee);
+        employeeRepository.deleteById(employeeId);
         Map < String, Boolean > response = new HashMap < > ();
         response.put("deleted", Boolean.TRUE);
         return response;
@@ -111,12 +111,12 @@ public class EmployeeServiceImpl implements EmployeeService{
     public ResponseEntity<Employee> registerEmployee(@Valid @RequestBody Employee employeeDetails)
      throws ResourceNotFoundException {
         Employee savedEmployee =  employeeRepository.save(employeeDetails);
-        savedEmployee.setPassword(null);
+        System.out.println(savedEmployee);
         return ResponseEntity.status(HttpStatus.OK).body(savedEmployee);
     }
     @Override
 
-    public ResponseEntity<Object> verifyEmployee(@Valid @RequestBody Employee employeeDetails)
+    public ResponseEntity<Employee> verifyEmployee(@Valid @RequestBody Employee employeeDetails)
      throws ResourceNotFoundException {
 
        
@@ -126,11 +126,9 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 
             Map<String, String> data = new HashMap<>();
-            data.put("role", employee.getRole());
-            data.put("username", employee.getUserName());
-            data.put("employeeId", employee.getEmployeeId().toString());
+            employee.setPassword(null);
 
-            return new ResponseEntity<>(data, HttpStatus.OK);
+            return ResponseEntity.status(HttpStatus.OK).body(employee);
 
         }else{
             final Employee employee2 = new Employee();

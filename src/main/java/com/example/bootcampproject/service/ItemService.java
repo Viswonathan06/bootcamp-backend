@@ -17,7 +17,7 @@ public interface ItemService {
     public List < ItemDTO > getAllItem();
     public ResponseEntity < Item > getItemById(@PathVariable(value = "id") Long itemId) throws ResourceNotFoundException;
     public Item createItem(@Valid @RequestBody Item item);
-    public ResponseEntity < Item > updateItem(@PathVariable(value = "id") Long itemId,
+    public ResponseEntity <  List<ItemDTO> > updateItem(@PathVariable(value = "id") Long itemId,
         @Valid @RequestBody Item item) throws ResourceNotFoundException;
     public Map < String, Boolean > deleteItem(@PathVariable(value = "id") Long itemId)
     throws ResourceNotFoundException;

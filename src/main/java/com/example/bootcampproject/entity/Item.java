@@ -35,6 +35,22 @@ public class Item {
     @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "item_transaction")
     private List<LoanTransaction> LoanTransaction; 
-    
+    public Item(){
+        
+    }
+    public Item(Integer id, String itemDescription,
+    String issueStatus,
+    String itemMake,
+    String itemCategory,
+    Integer itemValuation){
+        this.itemId = id;
+        this.itemDescription =itemDescription;
+        this.issueStatus =issueStatus;
+        this.itemMake =itemMake;
+        this.itemCategory =itemCategory;
+        this.itemValuation =itemValuation;
+    }
     
 }
+
+

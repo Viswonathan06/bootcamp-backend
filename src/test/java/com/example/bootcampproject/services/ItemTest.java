@@ -1,27 +1,29 @@
 package com.example.bootcampproject.services;
-
-import com.example.bootcampproject.dto.LoanTransactionDTO;
+import com.example.bootcampproject.dto.EmployeeDTO;
+import com.example.bootcampproject.dto.ItemDTO;
 import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.entity.EmployeeCardDetails;
 import com.example.bootcampproject.entity.EmployeeIssue;
 import com.example.bootcampproject.entity.Item;
 import com.example.bootcampproject.entity.LoanCard;
 import com.example.bootcampproject.entity.LoanTransaction;
+import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.repository.ItemRepository;
-import com.example.bootcampproject.repository.LoanTransactionRepository;
+import com.example.bootcampproject.repository.EmployeeRepository;
 import com.example.bootcampproject.service.ItemServiceImpl;
-import com.example.bootcampproject.service.LoanTransactionService;
-import com.example.bootcampproject.service.LoanTransactionServiceImpl;
+import com.example.bootcampproject.service.EmployeeService;
+import com.example.bootcampproject.service.EmployeeServiceImpl;
 
 import org.junit.jupiter.api.extension.*;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 
 import java.util.Optional;
 import java.sql.Date;
-
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,14 +45,14 @@ import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class TransactionTest {
+public class ItemTest {
 
     @Mock
-    private LoanTransactionRepository loanTransactionRepository;
+    private EmployeeRepository employeeRepository;
     @Mock
     private ItemRepository itemRepository;
     @InjectMocks
-    private LoanTransactionServiceImpl loanTransactionServiceImpl;
+    private EmployeeServiceImpl employeeServiceImpl;
     @InjectMocks
     private ItemServiceImpl itemServiceImpl;
     private LoanTransaction loanTransaction;
@@ -60,7 +62,7 @@ public class TransactionTest {
     private Item item;
     private  Employee employee;
     
-    @BeforeEach void setUpLoan(){
+    @BeforeEach void setUpItem(){
         
         employee = new Employee(
             1,
@@ -82,18 +84,18 @@ public class TransactionTest {
     }
 
     @Test void getAllLoan(){
-        loanTransactionServiceImpl.getAllLoanTransaction();
-        verify(loanTransactionRepository).findAll();
+        itemServiceImpl.getAllItem();
+        verify(itemRepository).findAll();
     }
 
     @Test
-    public void givenTransactionId_thenReturnTransactionObj(){
-        given(loanTransactionRepository.findById(123L)).willReturn(Optional.of(loanTransaction));
+    public void givenItemId_thenReturnItemObj(){
+        given(itemRepository.findById(123L)).willReturn(Optional.of(item));
 
         // when
         try{
-            LoanTransaction savedLoan = loanTransactionServiceImpl.getLoanTransactionById(Long.valueOf(loanTransaction.getTransactionId())).getBody();
-            assertThat(savedLoan).isNotNull();
+            Item savedItem = itemServiceImpl.getItemById(Long.valueOf(item.getItemId())).getBody();
+            assertThat(savedItem).isNotNull();
         }catch(ResourceNotFoundException e){
             System.out.println(e);
         }
@@ -101,25 +103,26 @@ public class TransactionTest {
     }
 
     @Test
-    public void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee(){
+    public void givenItemObject_whenUpdateItem_thenReturnUpdatedItem(){
         // given - precondition or setup
-        given(loanTransactionRepository.save(loanTransaction)).willReturn(loanTransaction);
-        loanTransaction.setStatus("ACCEPTED");
+        given(itemRepository.save(item)).willReturn(item);
+        item.setIssueStatus("COMPLETE");
+        item.setItemCategory("FASHION");
         // when -  action or the behaviour that we are going test
-        LoanTransactionDTO loanTransactionDTO = new LoanTransactionDTO(loanTransaction.getStatus(), false, loanTransaction.getLoanCard().getLoanType(),loanTransaction.getTransactionId(), 
-        loanTransaction.getTimestamp(), loanTransaction.getAmount(), loanTransaction.getLoanCard().getLoanId(), 
-        loanTransaction.getEmployee().getEmployeeId(),loanTransaction.getItem().getItemId() , loanTransaction.getLoanCard().getDuration());
+        
         try{
-            List<LoanTransactionDTO> updatedTransactions= loanTransactionServiceImpl.updateLoanTransaction(Long.valueOf(loanTransactionDTO.getTransactionId()), loanTransactionDTO).getBody();
-            LoanTransactionDTO updatedTransaction = new LoanTransactionDTO();
-            for(LoanTransactionDTO temp : updatedTransactions){
-                if(temp.getTransactionId() == loanTransaction.getTransactionId()){
-                    updatedTransaction = temp;
+            List<ItemDTO> updatedItemDTOs = itemServiceImpl.updateItem(Long.valueOf(item.getItemId()), item).getBody();
+            ItemDTO updatedItem = new ItemDTO();
+            for(ItemDTO temp : updatedItemDTOs){
+                if(temp.getItemId() == item.getItemId()){
+                    updatedItem = temp;
                 }
             }
              
             // then - verify the output
-            assertThat(updatedTransaction.getStatus()).isEqualTo("ACCEPTED"); 
+            assertThat(updatedItem.getIssueStatus()).isEqualTo("COMPLETE"); 
+            assertThat(updatedItem.getItemCategory()).isEqualTo("FASHION"); 
+
         }catch(ResourceNotFoundException E){
             System.out.println(E);
         }
@@ -127,22 +130,19 @@ public class TransactionTest {
 
 
     @Test
-    public void givenEmployeeObject_whenSaveEmployee_thenReturnEmployeeObject(){
+    public void givenItemObject_whenSaveItem_thenReturnItemObject(){
         // given - precondition or setup
-        given(loanTransactionRepository.findById(Long.valueOf(loanTransaction.getTransactionId())))
+        given(itemRepository.findById(Long.valueOf(item.getItemId())))
                 .willReturn(Optional.empty());
 
         
-        System.out.println(loanTransactionRepository);
-        System.out.println(loanTransactionServiceImpl);
-        LoanTransactionDTO loanTransactionDTO = new LoanTransactionDTO(loanTransaction.getStatus(), false, loanTransaction.getLoanCard().getLoanType(),loanTransaction.getTransactionId(), 
-        loanTransaction.getTimestamp(), loanTransaction.getAmount(), loanTransaction.getLoanCard().getLoanId(), 
-        loanTransaction.getEmployee().getEmployeeId(),loanTransaction.getItem().getItemId() , loanTransaction.getLoanCard().getDuration());;
+        System.out.println(itemRepository);
+        System.out.println(itemServiceImpl);
         // when -  action or the behaviour that we are going test
         try{
-            LoanTransaction savedTransaction = loanTransactionServiceImpl.registerLoanTransaction(loanTransactionDTO).getBody();
-            System.out.println(savedTransaction);
-            assertThat(savedTransaction).isNotNull();
+            String responseString = itemServiceImpl.registerItem(item).getBody();
+            // System.out.println(savedItem);
+            assertThat(responseString).isEqualTo("Item Registered!");
             
         }catch(ResourceNotFoundException e){
             System.out.print(e);
@@ -151,6 +151,24 @@ public class TransactionTest {
         // then - verify the output
     }
 
+    @Test
+    public void givenEmployeeId_whenDeleteEmployee_thenNothing(){
+        // given - precondition or setup
+        long itemId = 1L;
+        
+        willDoNothing().given(itemRepository).deleteById(itemId);
+
+        // when -  action or the behaviour that we are going test
+        try{
+            
+            itemServiceImpl.deleteItem(itemId);
+        }catch(ResourceNotFoundException e){
+            System.out.println(e);
+        }
+
+        // then - verify the output
+        verify(itemRepository, times(1)).deleteById(itemId);
+    }
 
 
     

@@ -41,7 +41,7 @@ public class ItemController {
     }
 
     @PutMapping("/item/{id}")
-    public ResponseEntity < Item > updateItem(@PathVariable(value = "id") Long itemId,
+    public ResponseEntity <  List<ItemDTO> > updateItem(@PathVariable(value = "id") Long itemId,
         @Valid @RequestBody Item item) throws ResourceNotFoundException {
         return itemService.updateItem(itemId, item);
     }

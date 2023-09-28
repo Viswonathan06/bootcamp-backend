@@ -63,7 +63,8 @@ public class Employee {
     public Employee(){
 
     }
-    public Employee(String userName, String emailId, String password, String employeeName,String department,String designation ,String gender ,Date dateOfBirth ,Date dateOfJoining ,EmployeeCardDetails employeeCardDetails ,EmployeeIssue employeeIssue){
+    public Employee(Integer Id, String userName, String emailId, String password, String employeeName,String department,String designation ,String gender ,Date dateOfBirth ,Date dateOfJoining ,EmployeeCardDetails employeeCardDetails ,EmployeeIssue employeeIssue){
+        this.employeeId = Id;
         this.employeeName =  employeeName;
         this.password = password;
         this.userName = userName;
