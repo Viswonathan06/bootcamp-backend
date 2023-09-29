@@ -116,7 +116,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
     @Override
 
-    public ResponseEntity<Employee> verifyEmployee(@Valid @RequestBody Employee employeeDetails)
+    public ResponseEntity<EmployeeDTO> verifyEmployee(@Valid @RequestBody Employee employeeDetails)
      throws ResourceNotFoundException {
 
        
@@ -127,11 +127,18 @@ public class EmployeeServiceImpl implements EmployeeService{
 
             Map<String, String> data = new HashMap<>();
             employee.setPassword(null);
+            List<LoanTransaction> loans = employee.getLoanTransaction();
+            List<Integer> loanIDs = new ArrayList();
 
-            return ResponseEntity.status(HttpStatus.OK).body(employee);
+            for(LoanTransaction loan : loans){
+                loanIDs.add(loan.getTransactionId());
+            }
+            EmployeeDTO temp = new EmployeeDTO(employee.getBalance(), employee.getEmployeeId(), employee.getUserName(), employee.getEmailId(), employee.getPassword(), employee.getEmployeeName(), employee.getDepartment(), employee.getDesignation(), employee.getGender(), employee.getDateOfBirth(), employee.getDateOfJoining(), loanIDs );
+
+            return ResponseEntity.status(HttpStatus.OK).body(temp);
 
         }else{
-            final Employee employee2 = new Employee();
+            final EmployeeDTO employee2 = new EmployeeDTO();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(employee2);
         }
     }
