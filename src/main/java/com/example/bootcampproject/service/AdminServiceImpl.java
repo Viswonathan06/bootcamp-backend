@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Admin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,10 +35,10 @@ public class AdminServiceImpl implements AdminService{
         return lst;
     }
     @Override
-    public ResponseEntity < AdminCredentials > getAdminCredentialsById(@PathVariable(value = "id") Long employeeId)
+    public ResponseEntity < AdminCredentials > getAdminCredentialsById(@PathVariable(value = "id") Long adminId)
     throws ResourceNotFoundException {
-        AdminCredentials adminCredentials = adminRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this id :: " + employeeId));
+        AdminCredentials adminCredentials = adminRepository.findById(adminId)
+            .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this id :: " + adminId));
         return ResponseEntity.ok().body(adminCredentials);
     }
     @Override
@@ -45,51 +46,49 @@ public class AdminServiceImpl implements AdminService{
         return adminRepository.save(adminCredentials);
     }
     @Override
-    public ResponseEntity < AdminCredentials > updateAdmin(@PathVariable(value = "id") Long employeeId,
-        @Valid @RequestBody AdminCredentials employeeDetails) throws ResourceNotFoundException {
-        AdminCredentials adminCredentials = adminRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this id :: " + employeeId));
+    public ResponseEntity < AdminCredentials > updateAdmin(@PathVariable(value = "id") Long adminId,
+        @Valid @RequestBody AdminCredentials adminDetails) throws ResourceNotFoundException {
+        AdminCredentials adminCredentials = adminRepository.findById(adminId)
+            .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this id :: " + adminId));
 
-        adminCredentials.setEmailId(employeeDetails.getEmailId());
-        adminCredentials.setUserName(employeeDetails.getUserName());
-        adminCredentials.setPassword(employeeDetails.getPassword());
+        adminCredentials.setEmailId(adminDetails.getEmailId());
+        adminCredentials.setUserName(adminDetails.getUserName());
+        adminCredentials.setPassword(adminDetails.getPassword());
         final AdminCredentials updatedEmployee = adminRepository.save(adminCredentials);
         return ResponseEntity.ok(updatedEmployee);
     }
     @Override
-    public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)
+    public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long adminId)
     throws ResourceNotFoundException {
-        AdminCredentials adminCredentials = adminRepository.findById(employeeId)
-            .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this id :: " + employeeId));
-
-        adminRepository.delete(adminCredentials);
+        
+        adminRepository.deleteById(adminId);
         Map < String, Boolean > response = new HashMap < > ();
         response.put("deleted", Boolean.TRUE);
         return response;
     }
     @Override
-    public ResponseEntity<AdminCredentials> registerAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
+    public ResponseEntity<AdminCredentials> registerAdminCredentials(@Valid @RequestBody AdminCredentials adminDetails)
      throws ResourceNotFoundException {
-        AdminCredentials savedAdmin =  adminRepository.save(employeeDetails);
-        savedAdmin.setPassword(null);
+        AdminCredentials savedAdmin =  adminRepository.save(adminDetails);
+        
         return ResponseEntity.status(HttpStatus.OK).body(savedAdmin);
     }
     @Override
 
-    public ResponseEntity<Object> verifyAdminCredentials(@Valid @RequestBody AdminCredentials employeeDetails)
+    public ResponseEntity<AdminCredentials> verifyAdminCredentials(@Valid @RequestBody AdminCredentials adminDetails)
      throws ResourceNotFoundException {
 
        
-        AdminCredentials adminCredentials = adminRepository.findByUserName(employeeDetails.getUserName())
-            .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this username :: " + employeeDetails.getUserName()));
-        if(adminCredentials.getPassword().equalsIgnoreCase(employeeDetails.getPassword()) && adminCredentials.getUserName().equalsIgnoreCase(employeeDetails.getUserName())){
+        AdminCredentials adminCredentials = adminRepository.findByUserName(adminDetails.getUserName())
+            .orElseThrow(() -> new ResourceNotFoundException("AdminCredentials not found for this username :: " + adminDetails.getUserName()));
+        if(adminCredentials.getPassword().equalsIgnoreCase(adminDetails.getPassword()) && adminCredentials.getUserName().equalsIgnoreCase(adminDetails.getUserName())){
             Map<String, String> data = new HashMap<>();
-            data.put("role","ADMIN");
-            return new ResponseEntity<>(data, HttpStatus.OK);
+            adminCredentials.setRole("ADMIN");
+            return ResponseEntity.status(HttpStatus.OK).body(adminCredentials);
         
         }else{
-
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Admin Unauthorized");
+            adminCredentials.setRole("UNAUTHORIZED");
+            return ResponseEntity.status(HttpStatus.OK).body(adminCredentials);
         }
     }
 }

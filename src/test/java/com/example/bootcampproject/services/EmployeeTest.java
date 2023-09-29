@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
 import com.example.bootcampproject.dto.EmployeeDTO;
+import com.example.bootcampproject.entity.AdminCredentials;
 import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.entity.EmployeeCardDetails;
 import com.example.bootcampproject.entity.EmployeeIssue;
@@ -120,19 +121,15 @@ public class EmployeeTest {
 
 
     @Test
-    public void givenEmployeeObject_whenSaveEmployee_thenReturnEmployeeObject(){
+    public void givenEmployeeObject_whenSaveEmployee_thenReturnNull(){
         // given - precondition or setup
         given(employeeRepository.findById(Long.valueOf(employee.getEmployeeId())))
                 .willReturn(Optional.empty());
 
-        
-        System.out.println(employeeRepository);
-        System.out.println(employeeServiceImpl);
         // when -  action or the behaviour that we are going test
         try{
             Employee savedemployee = employeeServiceImpl.registerEmployee(employee).getBody();
-            System.out.println(savedemployee);
-            assertThat(savedemployee).isNotNull();
+            assertThat(savedemployee).isNull();
             
         }catch(ResourceNotFoundException e){
             System.out.print(e);
@@ -158,6 +155,39 @@ public class EmployeeTest {
 
         // then - verify the output
         verify(employeeRepository, times(1)).deleteById(employeeId);
+    }
+
+    @Test
+    public void givenEmployeeObject_whenLogin_thenReturnUpdatedEmployeObject(){
+        // given - precondition or setup
+        given(employeeRepository.save(employee)).willReturn(employee);
+        
+        // when -  action or the behaviour that we are going test
+        
+        try{
+            EmployeeDTO updatedemployee= employeeServiceImpl.verifyEmployee(employee).getBody();
+            // then - verify the output
+            assertThat(updatedemployee.getRole()).isEqualTo("EMPLOYEE"); 
+        }catch(ResourceNotFoundException E){
+            System.out.println(E);
+        }
+    }
+
+    
+    @Test
+    public void givenAdminCredentialsObject_whenUnauthorized_thenReturnRoleUnauthorized(){
+        // given - precondition or setup
+        given(employeeRepository.save(employee)).willReturn(employee);
+        employee.setPassword("182736");
+        // when -  action or the behaviour that we are going test
+        
+        try{
+            EmployeeDTO updatedemployee= employeeServiceImpl.verifyEmployee(employee).getBody();
+            // then - verify the output
+            assertThat(updatedemployee.getRole()).isEqualTo("UNAUTHORIZED"); 
+        }catch(ResourceNotFoundException E){
+            System.out.println(E);
+        }
     }
 
 

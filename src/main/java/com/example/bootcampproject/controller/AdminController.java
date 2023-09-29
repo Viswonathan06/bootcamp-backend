@@ -39,7 +39,7 @@ public class AdminController {
     }
 
     @PostMapping("/admincredentials/login")
-    public ResponseEntity<Object> verifyAdminCredentials( @Valid @RequestBody AdminCredentials adminCredentials)
+    public ResponseEntity<AdminCredentials> verifyAdminCredentials( @Valid @RequestBody AdminCredentials adminCredentials)
     throws ResourceNotFoundException {
         return adminService.verifyAdminCredentials(adminCredentials);
     }

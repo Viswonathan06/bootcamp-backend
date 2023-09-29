@@ -111,7 +111,6 @@ public class EmployeeServiceImpl implements EmployeeService{
     public ResponseEntity<Employee> registerEmployee(@Valid @RequestBody Employee employeeDetails)
      throws ResourceNotFoundException {
         Employee savedEmployee =  employeeRepository.save(employeeDetails);
-        System.out.println(savedEmployee);
         return ResponseEntity.status(HttpStatus.OK).body(savedEmployee);
     }
     @Override
@@ -127,6 +126,8 @@ public class EmployeeServiceImpl implements EmployeeService{
 
             Map<String, String> data = new HashMap<>();
             employee.setPassword(null);
+            employee.setRole("EMPLOYEE");
+
             List<LoanTransaction> loans = employee.getLoanTransaction();
             List<Integer> loanIDs = new ArrayList();
 
@@ -139,6 +140,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
         }else{
             final EmployeeDTO employee2 = new EmployeeDTO();
+            employee2.setRole("UNAUTHORIZED");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(employee2);
         }
     }
