@@ -3,8 +3,6 @@ package com.example.bootcampproject.controller;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bootcampproject.dto.ItemDTO;
-import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.entity.Item;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.service.ItemService;
-// @CrossOrigin(origins="http://localhost:3000")
+
+import jakarta.validation.Valid;
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class ItemController {

@@ -21,7 +21,7 @@ public interface EmployeeService {
         @Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException;
     public Map < String, Boolean > deleteEmployee(@PathVariable(value = "id") Long employeeId)
     throws ResourceNotFoundException;
-    public ResponseEntity<Employee> verifyEmployee(@Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException;
+    public ResponseEntity<EmployeeDTO> verifyEmployee(@Valid @RequestBody Employee employeeDetails) throws ResourceNotFoundException;
     public ResponseEntity<Employee> registerEmployee(@Valid @RequestBody Employee employeeDetails)
      throws ResourceNotFoundException;
 }

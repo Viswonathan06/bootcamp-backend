@@ -1,6 +1,5 @@
 package com.example.bootcampproject.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.bootcampproject.dto.LoanTransactionDTO;
-import com.example.bootcampproject.entity.Item;
 import com.example.bootcampproject.entity.LoanTransaction;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.service.LoanTransactionService;

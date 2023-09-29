@@ -1,4 +1,23 @@
 package com.example.bootcampproject.services;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
+
 import com.example.bootcampproject.dto.EmployeeDTO;
 import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.entity.EmployeeCardDetails;
@@ -6,39 +25,11 @@ import com.example.bootcampproject.entity.EmployeeIssue;
 import com.example.bootcampproject.entity.Item;
 import com.example.bootcampproject.entity.LoanCard;
 import com.example.bootcampproject.entity.LoanTransaction;
-import com.example.bootcampproject.entity.Employee;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
-import com.example.bootcampproject.repository.ItemRepository;
 import com.example.bootcampproject.repository.EmployeeRepository;
-import com.example.bootcampproject.service.ItemServiceImpl;
-import com.example.bootcampproject.service.EmployeeService;
+import com.example.bootcampproject.repository.ItemRepository;
 import com.example.bootcampproject.service.EmployeeServiceImpl;
-
-import org.junit.jupiter.api.extension.*;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-
-import java.util.Optional;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.mockito.InjectMocks;
-import static org.mockito.BDDMockito.*;
-import org.mockito.Mock;
-import org.mockito.ArgumentMatchers.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import org.mockito.Mockito.*;
-import org.mockito.quality.Strictness;
+import com.example.bootcampproject.service.ItemServiceImpl;
 
 
 
