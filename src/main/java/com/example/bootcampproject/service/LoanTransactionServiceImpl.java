@@ -20,7 +20,6 @@ import com.example.bootcampproject.entity.LoanTransaction;
 import com.example.bootcampproject.exceptions.ResourceNotFoundException;
 import com.example.bootcampproject.repository.EmployeeRepository;
 import com.example.bootcampproject.repository.ItemRepository;
-import com.example.bootcampproject.repository.LoanCardRepository;
 import com.example.bootcampproject.repository.LoanTransactionRepository;
 
 import jakarta.validation.Valid;
@@ -33,10 +32,8 @@ public class LoanTransactionServiceImpl implements LoanTransactionService{
     private EmployeeRepository employeeRepository;
     @Autowired
     private ItemRepository itemRepository;
-    @Autowired
-    private LoanCardRepository loanCardRepository;
-    @Autowired
-    private LoanCardService loanCardService;
+    
+   
     
 
     @Override
